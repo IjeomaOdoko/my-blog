@@ -7,7 +7,7 @@
 # https://learnxinyminutes.com/docs/yaml/
 
 title: fastpages
-description: An easy to use blogging platform with support for Jupyter Notebooks.
+description: This is a blog to capture my learnings as a data analyst.
 github_username: IjeomaOdoko
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: "my-blog"
@@ -39,8 +39,8 @@ baseurl: "/my-blog" # the subpath of your site, e.g. "/blog".
 # Github and twitter are optional:
 minima:
   social_links:
-    twitter: fastdotai
-    github: fastai
+    twitter: 
+    github: ijeomaodoko
 
 # Set this to true to get LaTeX math equation support
 use_math: 
