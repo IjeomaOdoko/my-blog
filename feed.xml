@@ -1,4 +1,648 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://ijeomaodoko.github.io/my-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://ijeomaodoko.github.io/my-blog/" rel="alternate" type="text/html" /><updated>2020-10-12T23:08:54-05:00</updated><id>https://ijeomaodoko.github.io/my-blog/feed.xml</id><title type="html">My Data Analyst Blog</title><subtitle>This is a blog to capture my learnings as a data analyst.</subtitle><entry><title type="html">Stock Price Movement Charts using Python</title><link href="https://ijeomaodoko.github.io/my-blog/2020/09/30/Price-Movement-Charts-using-mplfinance-Python-Library.html" rel="alternate" type="text/html" title="Stock Price Movement Charts using Python" /><published>2020-09-30T00:00:00-05:00</published><updated>2020-09-30T00:00:00-05:00</updated><id>https://ijeomaodoko.github.io/my-blog/2020/09/30/Price-Movement-Charts-using-mplfinance-Python-Library</id><content type="html" xml:base="https://ijeomaodoko.github.io/my-blog/2020/09/30/Price-Movement-Charts-using-mplfinance-Python-Library.html">&lt;!--
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://ijeomaodoko.github.io/my-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://ijeomaodoko.github.io/my-blog/" rel="alternate" type="text/html" /><updated>2020-10-12T23:09:49-05:00</updated><id>https://ijeomaodoko.github.io/my-blog/feed.xml</id><title type="html">My Data Analyst Blog</title><subtitle>This is a blog to capture my learnings as a data analyst.</subtitle><entry><title type="html">Stock Price Charts For Power Bi</title><link href="https://ijeomaodoko.github.io/my-blog/2020/10/12/Stock-Price-Charts-for-Power-BI.html" rel="alternate" type="text/html" title="Stock Price Charts For Power Bi" /><published>2020-10-12T00:00:00-05:00</published><updated>2020-10-12T00:00:00-05:00</updated><id>https://ijeomaodoko.github.io/my-blog/2020/10/12/Stock-Price-Charts-for-Power-BI</id><content type="html" xml:base="https://ijeomaodoko.github.io/my-blog/2020/10/12/Stock-Price-Charts-for-Power-BI.html">&lt;h1 id=&quot;create-stock-price-indicator-dashboard-in-power-bi&quot;&gt;Create Stock Price Indicator Dashboard in Power BI&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;toc:true- branch: master- badges: true- comments: true&lt;/li&gt;
+  &lt;li&gt;author: Ijeoma Odoko&lt;/li&gt;
+  &lt;li&gt;categories: [python, power bi, jupyter]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;about&quot;&gt;About&lt;/h2&gt;
+
+&lt;p&gt;The purpose of this project is to create a dataframe capturing stock price data and calculating indicator values using Python, and then visualize it in Power BI in a simple dashboard.&lt;/p&gt;
+
+&lt;p&gt;Key steps taken include:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Create the virtual environment for Windows in Anaconda.&lt;/li&gt;
+  &lt;li&gt;Download the required libraries, and the stock price and volume data from yahoo finance using the pandas_datareader python API into a pandas dataframe.&lt;/li&gt;
+  &lt;li&gt;Calculate the stock indicator values using the TA-lib Python library. Use the Pandas Library if function not available in TA-lib.&lt;/li&gt;
+  &lt;li&gt;Convert the dataframe(s) to csv files to use in Power BI.&lt;/li&gt;
+  &lt;li&gt;Create dashboard with the indicator values in Power BI.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;step-1-create-the-virtual-environment-for-windows-in-anaconda&quot;&gt;Step 1: Create the Virtual Environment for Windows in Anaconda&lt;/h2&gt;
+
+&lt;p&gt;Create a new python 3.7 environment in Anaconda. Reference this &lt;a href=&quot;https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf&quot;&gt;cheatsheet.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Download the TA-Lib wrapper from &lt;a href=&quot;https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib&quot;&gt;here.&lt;/a&gt; To choose the right one you need to know the python version in your environment, and computer’s operating system (32bit or 64bit).&lt;/p&gt;
+
+&lt;p&gt;Move it to the same Computer path that shows on your Anaconda Powershell prompt for your new virtual environment.&lt;/p&gt;
+
+&lt;p&gt;Run pip install with the TA-Lib file name, see picture below.&lt;/p&gt;
+
+&lt;p&gt;Pip Install all other required libraries like pandas, datetime, pandas_datareader.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;attachment:install%20datetime%20pandasdatareader.PNG&quot; alt=&quot;install%20datetime%20pandasdatareader.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;step-2-download-required-python-libraries-and-data-from-yahoo-finance&quot;&gt;Step 2: Download required python libraries and data from Yahoo Finance&lt;/h2&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# import python libraries
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas_datareader&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;datetime&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt; 
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;datetime&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timedelta&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;talib&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Create Parameters 
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Number_of_days&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Enter Calendar days:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Number_of_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Stock_Ticker&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Enter Stock Ticker:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stock_Ticker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Moving_Average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Enter Bollinger Bands Moving Average Type (Simple or Exponential): '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Moving_Average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Simple'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Moving_Average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Moving_Average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Exponential'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Moving_Average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; 
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'error'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Days&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Number_of_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Enter Calendar days:740
+740
+Enter Stock Ticker:TQQQ
+TQQQ
+Enter Bollinger Bands Moving Average Type (Simple or Exponential): Simple
+Simple
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# load stock data from yahoo 
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;today&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timedelta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;today&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;today&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataReader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stock_Ticker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;today&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                       &lt;span class=&quot;n&quot;&gt;data_source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'yahoo'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-3-create-stock-indicator-values-using-pandas-and-ta-lib-library&quot;&gt;Step 3: Create stock indicator values using Pandas and TA-lib library&lt;/h2&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# ADD INDICATORS TO MAIN DATAFRAME df
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Daily_Returns'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pct_change&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# create column for daily returns
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Price_Up_or_Down'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Daily_Returns'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# create column for price up or down
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;## add columns for the volatility and volume indicators
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;talib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ATR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OBV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ADX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSI&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Average_True_Range'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ATR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'High'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Low'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'On_Balance_Volume'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OBV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Volume'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## add columns for momentum indicators
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;talib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ADX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STOCH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WILLR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MFI&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'ADX'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ADX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'High'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Low'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#create column for ADX assume timeperiod of 14 days
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'RSI'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#create column for RSI assume timeperiod of 14 days 
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'William_%R'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WILLR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'High'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Low'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#create column for William %R use high, low and close, and assume timeperiod of 14 days
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'MFI'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MFI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'High'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Low'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Volume'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#create column for MFI use high, low and close, and assume timeperiod of 14 days
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;## add columns for statistic functions
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;talib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LINEARREG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TSF&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;adj_close&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_numpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# create ndarray from the adj_close prices
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Linear_Regression'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LINEARREG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;adj_close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Time_Series_Forecast'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TSF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;adj_close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## add column for moving averages
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;talib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SMA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EMA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WMA&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;#import the moving average functions
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Simple_Moving_Average_50'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SMA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Simple_Moving_Average_200'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SMA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    
+&lt;span class=&quot;c1&quot;&gt;## add columns for momentum indicators STOCH_df
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slowk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STOCH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'High'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Low'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fastk_period&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowk_period&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowk_matype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowd_period&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowd_matype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# uses high, low, close by default
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;STOCH_array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slowk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transpose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; 
+&lt;span class=&quot;n&quot;&gt;STOCH_df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STOCH_array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'STOCH_slowk'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'STOCH_slowd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STOCH_df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'STOCH_slowk'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'STOCH_slowd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;how&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'right'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# join STOCH to main dataframe 
+&lt;/span&gt;
+
+
+&lt;span class=&quot;c1&quot;&gt;# CREATE Bollinger Bands® DATAFRAME WITH Bollinger Bands® INDICATORS
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;talib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BBANDS&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## Parameters
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BBands_periods&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;SDnumber&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Moving_Average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Simple'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;moving_avg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;moving_avg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;    
+ 
+&lt;span class=&quot;n&quot;&gt;upperband&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;middleband&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lowerband&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BBANDS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;adj_close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeperiod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BBands_periods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nbdevup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SDnumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nbdevdn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SDnumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;moving_avg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# calculate the bollinger bands assuming the middle band as the simple moving average
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;upperband&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;middleband&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lowerband&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transpose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# transpose the ndarrays 
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_upperband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'BB_middleband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'BB_lowerband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# create dataframe from the ndarrays
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;how&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'left'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# add Adj Close Column and volume to bollinger bands dataframe 
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_Width'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_upperband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_lowerband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_middleband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# add column for Bollinger Band Width
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Percent_B'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_lowerband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_upperband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_lowerband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mul&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# add column for Percent B
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;## create list for Bollinger Bands® buy/sell strategy conditions
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buy_or_sell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_upperband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'BB_lowerband'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;choices&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Sell'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Buy'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Action'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buy_or_sell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;choices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Neutral'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# create new column for action to take based on BollingerBand values
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Adj Close'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inplace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# drop Adj Close column
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dropna&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inplace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# drop empty rows
+&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# CREATE MERGED DATAFRAME
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# join Bollinger Bands® dataframe to main dataframe to create new
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stocks_df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;how&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'left'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   
+&lt;span class=&quot;n&quot;&gt;stocks_df&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;BB_upperband&lt;/th&gt;
+      &lt;th&gt;BB_middleband&lt;/th&gt;
+      &lt;th&gt;BB_lowerband&lt;/th&gt;
+      &lt;th&gt;BB_Width&lt;/th&gt;
+      &lt;th&gt;Percent_B&lt;/th&gt;
+      &lt;th&gt;Action&lt;/th&gt;
+      &lt;th&gt;STOCH_slowk&lt;/th&gt;
+      &lt;th&gt;STOCH_slowd&lt;/th&gt;
+      &lt;th&gt;High&lt;/th&gt;
+      &lt;th&gt;Low&lt;/th&gt;
+      &lt;th&gt;...&lt;/th&gt;
+      &lt;th&gt;Average_True_Range&lt;/th&gt;
+      &lt;th&gt;On_Balance_Volume&lt;/th&gt;
+      &lt;th&gt;ADX&lt;/th&gt;
+      &lt;th&gt;RSI&lt;/th&gt;
+      &lt;th&gt;William_%R&lt;/th&gt;
+      &lt;th&gt;MFI&lt;/th&gt;
+      &lt;th&gt;Linear_Regression&lt;/th&gt;
+      &lt;th&gt;Time_Series_Forecast&lt;/th&gt;
+      &lt;th&gt;Simple_Moving_Average_50&lt;/th&gt;
+      &lt;th&gt;Simple_Moving_Average_200&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Date&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2018-10-30&lt;/th&gt;
+      &lt;td&gt;70.023204&lt;/td&gt;
+      &lt;td&gt;57.441679&lt;/td&gt;
+      &lt;td&gt;44.860155&lt;/td&gt;
+      &lt;td&gt;0.438063&lt;/td&gt;
+      &lt;td&gt;15.693175&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;27.900666&lt;/td&gt;
+      &lt;td&gt;27.639096&lt;/td&gt;
+      &lt;td&gt;49.049999&lt;/td&gt;
+      &lt;td&gt;45.570000&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;5.123637&lt;/td&gt;
+      &lt;td&gt;-1.397404e+08&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;31.158793&lt;/td&gt;
+      &lt;td&gt;-71.739130&lt;/td&gt;
+      &lt;td&gt;32.891829&lt;/td&gt;
+      &lt;td&gt;49.628769&lt;/td&gt;
+      &lt;td&gt;48.881414&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2018-10-31&lt;/th&gt;
+      &lt;td&gt;67.553510&lt;/td&gt;
+      &lt;td&gt;56.486655&lt;/td&gt;
+      &lt;td&gt;45.419801&lt;/td&gt;
+      &lt;td&gt;0.391840&lt;/td&gt;
+      &lt;td&gt;30.191152&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;46.609921&lt;/td&gt;
+      &lt;td&gt;35.213573&lt;/td&gt;
+      &lt;td&gt;53.660000&lt;/td&gt;
+      &lt;td&gt;51.250000&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;5.096948&lt;/td&gt;
+      &lt;td&gt;-1.172207e+08&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;36.433929&lt;/td&gt;
+      &lt;td&gt;-53.344484&lt;/td&gt;
+      &lt;td&gt;41.639084&lt;/td&gt;
+      &lt;td&gt;48.860358&lt;/td&gt;
+      &lt;td&gt;48.009042&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2018-11-01&lt;/th&gt;
+      &lt;td&gt;65.799976&lt;/td&gt;
+      &lt;td&gt;55.848475&lt;/td&gt;
+      &lt;td&gt;45.896975&lt;/td&gt;
+      &lt;td&gt;0.356375&lt;/td&gt;
+      &lt;td&gt;42.609367&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;71.598957&lt;/td&gt;
+      &lt;td&gt;48.703181&lt;/td&gt;
+      &lt;td&gt;54.619999&lt;/td&gt;
+      &lt;td&gt;51.439999&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;4.960023&lt;/td&gt;
+      &lt;td&gt;-1.014624e+08&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;39.862677&lt;/td&gt;
+      &lt;td&gt;-40.635438&lt;/td&gt;
+      &lt;td&gt;40.177119&lt;/td&gt;
+      &lt;td&gt;49.358470&lt;/td&gt;
+      &lt;td&gt;48.622607&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2018-11-02&lt;/th&gt;
+      &lt;td&gt;64.439876&lt;/td&gt;
+      &lt;td&gt;55.214786&lt;/td&gt;
+      &lt;td&gt;45.989696&lt;/td&gt;
+      &lt;td&gt;0.334153&lt;/td&gt;
+      &lt;td&gt;32.264480&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;83.134317&lt;/td&gt;
+      &lt;td&gt;67.114398&lt;/td&gt;
+      &lt;td&gt;54.930000&lt;/td&gt;
+      &lt;td&gt;50.799999&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;4.900736&lt;/td&gt;
+      &lt;td&gt;-1.232571e+08&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;37.529625&lt;/td&gt;
+      &lt;td&gt;-54.236345&lt;/td&gt;
+      &lt;td&gt;40.113450&lt;/td&gt;
+      &lt;td&gt;49.019171&lt;/td&gt;
+      &lt;td&gt;48.272671&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2018-11-05&lt;/th&gt;
+      &lt;td&gt;63.153036&lt;/td&gt;
+      &lt;td&gt;54.613530&lt;/td&gt;
+      &lt;td&gt;46.074023&lt;/td&gt;
+      &lt;td&gt;0.312725&lt;/td&gt;
+      &lt;td&gt;31.381121&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;78.868933&lt;/td&gt;
+      &lt;td&gt;77.867402&lt;/td&gt;
+      &lt;td&gt;52.139999&lt;/td&gt;
+      &lt;td&gt;49.759998&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;4.720684&lt;/td&gt;
+      &lt;td&gt;-1.360822e+08&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;37.041639&lt;/td&gt;
+      &lt;td&gt;-57.079145&lt;/td&gt;
+      &lt;td&gt;34.302688&lt;/td&gt;
+      &lt;td&gt;49.342788&lt;/td&gt;
+      &lt;td&gt;48.745978&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;...&lt;/th&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2020-10-06&lt;/th&gt;
+      &lt;td&gt;138.348875&lt;/td&gt;
+      &lt;td&gt;125.399501&lt;/td&gt;
+      &lt;td&gt;112.450128&lt;/td&gt;
+      &lt;td&gt;0.206530&lt;/td&gt;
+      &lt;td&gt;54.172024&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;31.246967&lt;/td&gt;
+      &lt;td&gt;50.686292&lt;/td&gt;
+      &lt;td&gt;135.119995&lt;/td&gt;
+      &lt;td&gt;125.150002&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;9.713780&lt;/td&gt;
+      &lt;td&gt;1.352882e+09&lt;/td&gt;
+      &lt;td&gt;20.178407&lt;/td&gt;
+      &lt;td&gt;48.428622&lt;/td&gt;
+      &lt;td&gt;-38.672007&lt;/td&gt;
+      &lt;td&gt;42.728684&lt;/td&gt;
+      &lt;td&gt;132.350001&lt;/td&gt;
+      &lt;td&gt;133.575605&lt;/td&gt;
+      &lt;td&gt;131.548601&lt;/td&gt;
+      &lt;td&gt;95.623291&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2020-10-07&lt;/th&gt;
+      &lt;td&gt;138.518796&lt;/td&gt;
+      &lt;td&gt;125.452501&lt;/td&gt;
+      &lt;td&gt;112.386207&lt;/td&gt;
+      &lt;td&gt;0.208307&lt;/td&gt;
+      &lt;td&gt;79.379039&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;49.199414&lt;/td&gt;
+      &lt;td&gt;46.141732&lt;/td&gt;
+      &lt;td&gt;134.110001&lt;/td&gt;
+      &lt;td&gt;129.380005&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;9.564938&lt;/td&gt;
+      &lt;td&gt;1.381018e+09&lt;/td&gt;
+      &lt;td&gt;19.732322&lt;/td&gt;
+      &lt;td&gt;52.268168&lt;/td&gt;
+      &lt;td&gt;-16.483153&lt;/td&gt;
+      &lt;td&gt;49.831451&lt;/td&gt;
+      &lt;td&gt;134.138573&lt;/td&gt;
+      &lt;td&gt;135.507804&lt;/td&gt;
+      &lt;td&gt;132.055401&lt;/td&gt;
+      &lt;td&gt;95.863445&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2020-10-08&lt;/th&gt;
+      &lt;td&gt;139.695310&lt;/td&gt;
+      &lt;td&gt;125.985501&lt;/td&gt;
+      &lt;td&gt;112.275692&lt;/td&gt;
+      &lt;td&gt;0.217641&lt;/td&gt;
+      &lt;td&gt;83.204312&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;55.772146&lt;/td&gt;
+      &lt;td&gt;45.406176&lt;/td&gt;
+      &lt;td&gt;136.610001&lt;/td&gt;
+      &lt;td&gt;133.539993&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;9.130299&lt;/td&gt;
+      &lt;td&gt;1.405755e+09&lt;/td&gt;
+      &lt;td&gt;18.965605&lt;/td&gt;
+      &lt;td&gt;53.370095&lt;/td&gt;
+      &lt;td&gt;-9.943310&lt;/td&gt;
+      &lt;td&gt;57.363264&lt;/td&gt;
+      &lt;td&gt;135.420572&lt;/td&gt;
+      &lt;td&gt;136.782528&lt;/td&gt;
+      &lt;td&gt;132.528001&lt;/td&gt;
+      &lt;td&gt;96.110250&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2020-10-09&lt;/th&gt;
+      &lt;td&gt;141.996039&lt;/td&gt;
+      &lt;td&gt;126.955001&lt;/td&gt;
+      &lt;td&gt;111.913964&lt;/td&gt;
+      &lt;td&gt;0.236951&lt;/td&gt;
+      &lt;td&gt;97.021374&lt;/td&gt;
+      &lt;td&gt;Neutral&lt;/td&gt;
+      &lt;td&gt;83.294339&lt;/td&gt;
+      &lt;td&gt;62.755300&lt;/td&gt;
+      &lt;td&gt;141.389999&lt;/td&gt;
+      &lt;td&gt;136.960007&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;8.928135&lt;/td&gt;
+      &lt;td&gt;1.430164e+09&lt;/td&gt;
+      &lt;td&gt;17.616138&lt;/td&gt;
+      &lt;td&gt;56.673091&lt;/td&gt;
+      &lt;td&gt;-0.900041&lt;/td&gt;
+      &lt;td&gt;64.342049&lt;/td&gt;
+      &lt;td&gt;137.913431&lt;/td&gt;
+      &lt;td&gt;139.403519&lt;/td&gt;
+      &lt;td&gt;133.084601&lt;/td&gt;
+      &lt;td&gt;96.386550&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2020-10-12&lt;/th&gt;
+      &lt;td&gt;147.458290&lt;/td&gt;
+      &lt;td&gt;128.269001&lt;/td&gt;
+      &lt;td&gt;109.079712&lt;/td&gt;
+      &lt;td&gt;0.299204&lt;/td&gt;
+      &lt;td&gt;117.722658&lt;/td&gt;
+      &lt;td&gt;Sell&lt;/td&gt;
+      &lt;td&gt;90.841647&lt;/td&gt;
+      &lt;td&gt;76.636044&lt;/td&gt;
+      &lt;td&gt;158.729996&lt;/td&gt;
+      &lt;td&gt;146.860001&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;9.549696&lt;/td&gt;
+      &lt;td&gt;1.466805e+09&lt;/td&gt;
+      &lt;td&gt;18.085055&lt;/td&gt;
+      &lt;td&gt;62.874384&lt;/td&gt;
+      &lt;td&gt;-9.019373&lt;/td&gt;
+      &lt;td&gt;64.782233&lt;/td&gt;
+      &lt;td&gt;144.046286&lt;/td&gt;
+      &lt;td&gt;146.150660&lt;/td&gt;
+      &lt;td&gt;133.782201&lt;/td&gt;
+      &lt;td&gt;96.717500&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;491 rows × 26 columns&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+DatetimeIndex: 510 entries, 2018-10-03 to 2020-10-12
+Data columns (total 20 columns):
+ #   Column                     Non-Null Count  Dtype  
+---  ------                     --------------  -----  
+ 0   STOCH_slowk                502 non-null    float64
+ 1   STOCH_slowd                502 non-null    float64
+ 2   High                       510 non-null    float64
+ 3   Low                        510 non-null    float64
+ 4   Open                       510 non-null    float64
+ 5   Close                      510 non-null    float64
+ 6   Volume                     510 non-null    float64
+ 7   Adj Close                  510 non-null    float64
+ 8   Daily_Returns              509 non-null    float64
+ 9   Price_Up_or_Down           510 non-null    int32  
+ 10  Average_True_Range         496 non-null    float64
+ 11  On_Balance_Volume          510 non-null    float64
+ 12  ADX                        483 non-null    float64
+ 13  RSI                        496 non-null    float64
+ 14  William_%R                 497 non-null    float64
+ 15  MFI                        496 non-null    float64
+ 16  Linear_Regression          497 non-null    float64
+ 17  Time_Series_Forecast       497 non-null    float64
+ 18  Simple_Moving_Average_50   461 non-null    float64
+ 19  Simple_Moving_Average_200  311 non-null    float64
+dtypes: float64(19), int32(1)
+memory usage: 101.7 KB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+DatetimeIndex: 491 entries, 2018-10-30 to 2020-10-12
+Data columns (total 6 columns):
+ #   Column         Non-Null Count  Dtype  
+---  ------         --------------  -----  
+ 0   BB_upperband   491 non-null    float64
+ 1   BB_middleband  491 non-null    float64
+ 2   BB_lowerband   491 non-null    float64
+ 3   BB_Width       491 non-null    float64
+ 4   Percent_B      491 non-null    float64
+ 5   Action         491 non-null    object 
+dtypes: float64(5), object(1)
+memory usage: 46.9+ KB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;stocks_df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+DatetimeIndex: 491 entries, 2018-10-30 to 2020-10-12
+Data columns (total 26 columns):
+ #   Column                     Non-Null Count  Dtype  
+---  ------                     --------------  -----  
+ 0   BB_upperband               491 non-null    float64
+ 1   BB_middleband              491 non-null    float64
+ 2   BB_lowerband               491 non-null    float64
+ 3   BB_Width                   491 non-null    float64
+ 4   Percent_B                  491 non-null    float64
+ 5   Action                     491 non-null    object 
+ 6   STOCH_slowk                491 non-null    float64
+ 7   STOCH_slowd                491 non-null    float64
+ 8   High                       491 non-null    float64
+ 9   Low                        491 non-null    float64
+ 10  Open                       491 non-null    float64
+ 11  Close                      491 non-null    float64
+ 12  Volume                     491 non-null    float64
+ 13  Adj Close                  491 non-null    float64
+ 14  Daily_Returns              491 non-null    float64
+ 15  Price_Up_or_Down           491 non-null    int32  
+ 16  Average_True_Range         491 non-null    float64
+ 17  On_Balance_Volume          491 non-null    float64
+ 18  ADX                        483 non-null    float64
+ 19  RSI                        491 non-null    float64
+ 20  William_%R                 491 non-null    float64
+ 21  MFI                        491 non-null    float64
+ 22  Linear_Regression          491 non-null    float64
+ 23  Time_Series_Forecast       491 non-null    float64
+ 24  Simple_Moving_Average_50   461 non-null    float64
+ 25  Simple_Moving_Average_200  311 non-null    float64
+dtypes: float64(24), int32(1), object(1)
+memory usage: 121.7+ KB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-4-download-dataframes-to-csv&quot;&gt;Step 4: Download dataframes to csv&lt;/h2&gt;
+
+&lt;p&gt;Power BI only supports the following python packages: &lt;a href=&quot;https://powerbi.microsoft.com/en-us/blog/python-visualizations-in-power-bi-service/&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;matplotlib&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;numpy&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;pandas&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;scikit-learn&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;scipy&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;seaborn&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;statsmodels&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;## send to CSV file
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r&quot;C:\TQQQ_df.csv&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sep&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;','&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stocks_bollingerbands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r&quot;C:\TQQQ_bbands.csv&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;','&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-5-create-visual-dashboard-in-power-bi-using-the-dataframes&quot;&gt;Step 5: Create visual dashboard in Power BI using the dataframes&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;attachment:Power%20BI%20-%20Stock%20Price%20Indicator%20Dashboard.PNG&quot; alt=&quot;Power%20BI%20-%20Stock%20Price%20Indicator%20Dashboard.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/percent-b#:~:text=How%20this%20indicator%20works,Percent%20B%20is%2050%20percent.&quot;&gt;Fidelity, Percent B (% B).&lt;/a&gt; Accessed October 1, 2020.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/bollinger-band-width&quot;&gt;Fidelity, Bollinger Band® Width.&lt;/a&gt; Accessed October 1, 2020.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/bollinger-bands&quot;&gt;Fidelity, Bollinger Bands®.&lt;/a&gt; Accessed October 1, 2020.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mrjbq7/ta-lib&quot;&gt;TA-lib python library.&lt;/a&gt; Accessed October 1, 2020.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://school.stockcharts.com/doku.php?id=technical_indicators:williams_r&quot;&gt;Williams %R.&lt;/a&gt; Accessed October 9, 2020&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.investopedia.com/terms/m/mfi.asp&quot;&gt;Money Flow Index&lt;/a&gt;Accessed October 9, 2020.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.investopedia.com/terms/r/rsi.asp&quot;&gt;Relative Strength Index&lt;/a&gt;Accessed October 9, 2020.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.investopedia.com/articles/trading/07/adx-trend-indicator.asp&quot;&gt;ADX: The Trend Strength Indicator&lt;/a&gt;Accessed October 9, 2020.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.bollingerbands.com/bollinger-band-rules&quot;&gt;Bollinger Bands Rules.&lt;/a&gt; Accessed October 1, 2020.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Create Stock Price Indicator Dashboard in Power BI</summary></entry><entry><title type="html">Stock Price Movement Charts using Python</title><link href="https://ijeomaodoko.github.io/my-blog/2020/09/30/Price-Movement-Charts-using-mplfinance-Python-Library.html" rel="alternate" type="text/html" title="Stock Price Movement Charts using Python" /><published>2020-09-30T00:00:00-05:00</published><updated>2020-09-30T00:00:00-05:00</updated><id>https://ijeomaodoko.github.io/my-blog/2020/09/30/Price-Movement-Charts-using-mplfinance-Python-Library</id><content type="html" xml:base="https://ijeomaodoko.github.io/my-blog/2020/09/30/Price-Movement-Charts-using-mplfinance-Python-Library.html">&lt;!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################

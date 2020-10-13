@@ -1,0 +1,645 @@
+<h1 id="create-stock-price-indicator-dashboard-in-power-bi">Create Stock Price Indicator Dashboard in Power BI</h1>
+
+<ul>
+  <li>toc:true- branch: master- badges: true- comments: true</li>
+  <li>author: Ijeoma Odoko</li>
+  <li>categories: [python, power bi, jupyter]</li>
+</ul>
+
+<h2 id="about">About</h2>
+
+<p>The purpose of this project is to create a dataframe capturing stock price data and calculating indicator values using Python, and then visualize it in Power BI in a simple dashboard.</p>
+
+<p>Key steps taken include:</p>
+<ol>
+  <li>Create the virtual environment for Windows in Anaconda.</li>
+  <li>Download the required libraries, and the stock price and volume data from yahoo finance using the pandas_datareader python API into a pandas dataframe.</li>
+  <li>Calculate the stock indicator values using the TA-lib Python library. Use the Pandas Library if function not available in TA-lib.</li>
+  <li>Convert the dataframe(s) to csv files to use in Power BI.</li>
+  <li>Create dashboard with the indicator values in Power BI.</li>
+</ol>
+
+<h2 id="step-1-create-the-virtual-environment-for-windows-in-anaconda">Step 1: Create the Virtual Environment for Windows in Anaconda</h2>
+
+<p>Create a new python 3.7 environment in Anaconda. Reference this <a href="https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf">cheatsheet.</a></p>
+
+<p>Download the TA-Lib wrapper from <a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib">here.</a> To choose the right one you need to know the python version in your environment, and computer’s operating system (32bit or 64bit).</p>
+
+<p>Move it to the same Computer path that shows on your Anaconda Powershell prompt for your new virtual environment.</p>
+
+<p>Run pip install with the TA-Lib file name, see picture below.</p>
+
+<p>Pip Install all other required libraries like pandas, datetime, pandas_datareader.</p>
+
+<p><img src="attachment:install%20datetime%20pandasdatareader.PNG" alt="install%20datetime%20pandasdatareader.PNG" /></p>
+
+<h2 id="step-2-download-required-python-libraries-and-data-from-yahoo-finance">Step 2: Download required python libraries and data from Yahoo Finance</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># import python libraries
+</span><span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">data</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> 
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">talib</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Create Parameters 
+</span><span class="n">Number_of_days</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">'Enter Calendar days:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Number_of_days</span><span class="p">)</span>
+
+<span class="n">Stock_Ticker</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">'Enter Stock Ticker:'</span><span class="p">)</span> 
+<span class="k">print</span><span class="p">(</span><span class="n">Stock_Ticker</span><span class="p">)</span>
+
+<span class="n">Moving_Average</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">'Enter Bollinger Bands Moving Average Type (Simple or Exponential): '</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">Moving_Average</span> <span class="o">==</span> <span class="s">'Simple'</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">Moving_Average</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">Moving_Average</span> <span class="o">==</span> <span class="s">'Exponential'</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">Moving_Average</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span> 
+    <span class="k">print</span><span class="p">(</span><span class="s">'error'</span><span class="p">)</span>
+
+<span class="n">Days</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Number_of_days</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Enter Calendar days:740
+740
+Enter Stock Ticker:TQQQ
+TQQQ
+Enter Bollinger Bands Moving Average Type (Simple or Exponential): Simple
+Simple
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># load stock data from yahoo 
+</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">date</span><span class="p">.</span><span class="n">today</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">Days</span><span class="p">)</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="p">.</span><span class="n">today</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">Stock_Ticker</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">today</span><span class="p">,</span>
+                       <span class="n">data_source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="step-3-create-stock-indicator-values-using-pandas-and-ta-lib-library">Step 3: Create stock indicator values using Pandas and TA-lib library</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># ADD INDICATORS TO MAIN DATAFRAME df
+</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Daily_Returns'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">].</span><span class="n">pct_change</span><span class="p">()</span>  <span class="c1"># create column for daily returns
+</span><span class="n">df</span><span class="p">[</span><span class="s">'Price_Up_or_Down'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'Daily_Returns'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># create column for price up or down
+</span>
+<span class="c1">## add columns for the volatility and volume indicators
+</span><span class="kn">from</span> <span class="nn">talib</span> <span class="kn">import</span> <span class="n">ATR</span><span class="p">,</span> <span class="n">OBV</span><span class="p">,</span> <span class="n">ADX</span><span class="p">,</span> <span class="n">RSI</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Average_True_Range'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ATR</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'High'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Low'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Close'</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'On_Balance_Volume'</span><span class="p">]</span> <span class="o">=</span> <span class="n">OBV</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Volume'</span><span class="p">])</span>
+
+<span class="c1">## add columns for momentum indicators
+</span><span class="kn">from</span> <span class="nn">talib</span> <span class="kn">import</span> <span class="n">ADX</span><span class="p">,</span> <span class="n">RSI</span><span class="p">,</span> <span class="n">STOCH</span><span class="p">,</span> <span class="n">WILLR</span><span class="p">,</span> <span class="n">MFI</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'ADX'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ADX</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'High'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Low'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Close'</span><span class="p">],</span> <span class="n">timeperiod</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span> <span class="c1">#create column for ADX assume timeperiod of 14 days
+</span><span class="n">df</span><span class="p">[</span><span class="s">'RSI'</span><span class="p">]</span> <span class="o">=</span> <span class="n">RSI</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">],</span><span class="n">timeperiod</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span> <span class="c1">#create column for RSI assume timeperiod of 14 days 
+</span><span class="n">df</span><span class="p">[</span><span class="s">'William_%R'</span><span class="p">]</span> <span class="o">=</span> <span class="n">WILLR</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'High'</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s">'Low'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Close'</span><span class="p">],</span> <span class="n">timeperiod</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span> <span class="c1">#create column for William %R use high, low and close, and assume timeperiod of 14 days
+</span><span class="n">df</span><span class="p">[</span><span class="s">'MFI'</span><span class="p">]</span> <span class="o">=</span> <span class="n">MFI</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'High'</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s">'Low'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Close'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Volume'</span><span class="p">],</span> <span class="n">timeperiod</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span> <span class="c1">#create column for MFI use high, low and close, and assume timeperiod of 14 days
+</span>
+<span class="c1">## add columns for statistic functions
+</span><span class="kn">from</span> <span class="nn">talib</span> <span class="kn">import</span> <span class="n">LINEARREG</span><span class="p">,</span> <span class="n">TSF</span>
+
+<span class="n">adj_close</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">].</span><span class="n">to_numpy</span><span class="p">()</span>  <span class="c1"># create ndarray from the adj_close prices
+</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Linear_Regression'</span><span class="p">]</span> <span class="o">=</span> <span class="n">LINEARREG</span><span class="p">(</span><span class="n">adj_close</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Time_Series_Forecast'</span><span class="p">]</span> <span class="o">=</span> <span class="n">TSF</span><span class="p">(</span><span class="n">adj_close</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1">## add column for moving averages
+</span><span class="kn">from</span> <span class="nn">talib</span> <span class="kn">import</span> <span class="n">MA</span><span class="p">,</span> <span class="n">SMA</span><span class="p">,</span> <span class="n">EMA</span><span class="p">,</span> <span class="n">WMA</span>    <span class="c1">#import the moving average functions
+</span><span class="n">df</span><span class="p">[</span><span class="s">'Simple_Moving_Average_50'</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">],</span> <span class="n">timeperiod</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Simple_Moving_Average_200'</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">],</span> <span class="n">timeperiod</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    
+<span class="c1">## add columns for momentum indicators STOCH_df
+</span><span class="n">slowk</span><span class="p">,</span> <span class="n">slowd</span> <span class="o">=</span> <span class="n">STOCH</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'High'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Low'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'Close'</span><span class="p">],</span> <span class="n">fastk_period</span><span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">slowk_period</span><span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">slowk_matype</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">slowd_period</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">slowd_matype</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># uses high, low, close by default
+</span><span class="n">STOCH_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">slowk</span><span class="p">,</span> <span class="n">slowd</span><span class="p">]).</span><span class="n">transpose</span><span class="p">()</span> 
+<span class="n">STOCH_df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">STOCH_array</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'STOCH_slowk'</span><span class="p">,</span> <span class="s">'STOCH_slowd'</span><span class="p">])</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">STOCH_df</span><span class="p">[[</span><span class="s">'STOCH_slowk'</span><span class="p">,</span> <span class="s">'STOCH_slowd'</span><span class="p">]].</span><span class="n">join</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s">'right'</span><span class="p">)</span>  <span class="c1"># join STOCH to main dataframe 
+</span>
+
+
+<span class="c1"># CREATE Bollinger Bands® DATAFRAME WITH Bollinger Bands® INDICATORS
+</span>
+<span class="kn">from</span> <span class="nn">talib</span> <span class="kn">import</span> <span class="n">BBANDS</span>
+
+<span class="c1">## Parameters
+</span><span class="n">BBands_periods</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">SDnumber</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">if</span> <span class="n">Moving_Average</span> <span class="o">==</span> <span class="s">'Simple'</span><span class="p">:</span> 
+    <span class="n">moving_avg</span><span class="o">=</span> <span class="mi">0</span>
+    
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">moving_avg</span> <span class="o">=</span> <span class="mi">1</span>    
+ 
+<span class="n">upperband</span><span class="p">,</span> <span class="n">middleband</span><span class="p">,</span> <span class="n">lowerband</span> <span class="o">=</span> <span class="n">BBANDS</span><span class="p">(</span><span class="n">adj_close</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="n">BBands_periods</span><span class="p">,</span> <span class="n">nbdevup</span><span class="o">=</span><span class="n">SDnumber</span><span class="p">,</span> <span class="n">nbdevdn</span> <span class="o">=</span> <span class="n">SDnumber</span><span class="p">,</span> <span class="n">matype</span><span class="o">=</span><span class="n">moving_avg</span><span class="p">)</span>  <span class="c1"># calculate the bollinger bands assuming the middle band as the simple moving average
+</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">upperband</span><span class="p">,</span> <span class="n">middleband</span><span class="p">,</span> <span class="n">lowerband</span><span class="p">]).</span><span class="n">transpose</span><span class="p">()</span>  <span class="c1"># transpose the ndarrays 
+</span>
+<span class="n">stocks_bollingerbands</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">bands</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'BB_upperband'</span><span class="p">,</span> <span class="s">'BB_middleband'</span><span class="p">,</span> <span class="s">'BB_lowerband'</span><span class="p">])</span> <span class="c1"># create dataframe from the ndarrays
+</span>
+<span class="n">stocks_bollingerbands</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s">'Adj Close'</span><span class="p">]].</span><span class="n">join</span><span class="p">(</span><span class="n">stocks_bollingerbands</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s">'left'</span><span class="p">)</span>  <span class="c1"># add Adj Close Column and volume to bollinger bands dataframe 
+</span>
+<span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_Width'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_upperband'</span><span class="p">]</span> <span class="o">-</span> <span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_lowerband'</span><span class="p">]).</span><span class="n">div</span><span class="p">(</span><span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_middleband'</span><span class="p">])</span> <span class="c1"># add column for Bollinger Band Width
+</span>
+<span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'Percent_B'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">]</span> <span class="o">-</span> <span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_lowerband'</span><span class="p">]).</span><span class="n">div</span><span class="p">(</span><span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_upperband'</span><span class="p">]</span> <span class="o">-</span> <span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_lowerband'</span><span class="p">]).</span><span class="n">mul</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># add column for Percent B
+</span>
+<span class="c1">## create list for Bollinger Bands® buy/sell strategy conditions
+</span><span class="n">buy_or_sell</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_upperband'</span><span class="p">]),</span>
+    <span class="p">(</span><span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'Adj Close'</span><span class="p">]</span> <span class="o">&lt;</span>  <span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'BB_lowerband'</span><span class="p">])</span>
+    <span class="p">]</span>
+
+<span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Sell'</span><span class="p">,</span> <span class="s">'Buy'</span><span class="p">]</span>
+
+<span class="n">stocks_bollingerbands</span><span class="p">[</span><span class="s">'Action'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="n">buy_or_sell</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="s">'Neutral'</span><span class="p">)</span> <span class="c1"># create new column for action to take based on BollingerBand values
+</span>
+<span class="n">stocks_bollingerbands</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s">'Adj Close'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># drop Adj Close column
+</span>
+<span class="n">stocks_bollingerbands</span><span class="p">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c1"># drop empty rows
+</span>
+
+<span class="c1"># CREATE MERGED DATAFRAME
+</span>
+<span class="c1"># join Bollinger Bands® dataframe to main dataframe to create new
+</span>
+<span class="n">stocks_df</span> <span class="o">=</span> <span class="n">stocks_bollingerbands</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s">'left'</span><span class="p">)</span>   
+<span class="n">stocks_df</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>BB_upperband</th>
+      <th>BB_middleband</th>
+      <th>BB_lowerband</th>
+      <th>BB_Width</th>
+      <th>Percent_B</th>
+      <th>Action</th>
+      <th>STOCH_slowk</th>
+      <th>STOCH_slowd</th>
+      <th>High</th>
+      <th>Low</th>
+      <th>...</th>
+      <th>Average_True_Range</th>
+      <th>On_Balance_Volume</th>
+      <th>ADX</th>
+      <th>RSI</th>
+      <th>William_%R</th>
+      <th>MFI</th>
+      <th>Linear_Regression</th>
+      <th>Time_Series_Forecast</th>
+      <th>Simple_Moving_Average_50</th>
+      <th>Simple_Moving_Average_200</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-10-30</th>
+      <td>70.023204</td>
+      <td>57.441679</td>
+      <td>44.860155</td>
+      <td>0.438063</td>
+      <td>15.693175</td>
+      <td>Neutral</td>
+      <td>27.900666</td>
+      <td>27.639096</td>
+      <td>49.049999</td>
+      <td>45.570000</td>
+      <td>...</td>
+      <td>5.123637</td>
+      <td>-1.397404e+08</td>
+      <td>NaN</td>
+      <td>31.158793</td>
+      <td>-71.739130</td>
+      <td>32.891829</td>
+      <td>49.628769</td>
+      <td>48.881414</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2018-10-31</th>
+      <td>67.553510</td>
+      <td>56.486655</td>
+      <td>45.419801</td>
+      <td>0.391840</td>
+      <td>30.191152</td>
+      <td>Neutral</td>
+      <td>46.609921</td>
+      <td>35.213573</td>
+      <td>53.660000</td>
+      <td>51.250000</td>
+      <td>...</td>
+      <td>5.096948</td>
+      <td>-1.172207e+08</td>
+      <td>NaN</td>
+      <td>36.433929</td>
+      <td>-53.344484</td>
+      <td>41.639084</td>
+      <td>48.860358</td>
+      <td>48.009042</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2018-11-01</th>
+      <td>65.799976</td>
+      <td>55.848475</td>
+      <td>45.896975</td>
+      <td>0.356375</td>
+      <td>42.609367</td>
+      <td>Neutral</td>
+      <td>71.598957</td>
+      <td>48.703181</td>
+      <td>54.619999</td>
+      <td>51.439999</td>
+      <td>...</td>
+      <td>4.960023</td>
+      <td>-1.014624e+08</td>
+      <td>NaN</td>
+      <td>39.862677</td>
+      <td>-40.635438</td>
+      <td>40.177119</td>
+      <td>49.358470</td>
+      <td>48.622607</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2018-11-02</th>
+      <td>64.439876</td>
+      <td>55.214786</td>
+      <td>45.989696</td>
+      <td>0.334153</td>
+      <td>32.264480</td>
+      <td>Neutral</td>
+      <td>83.134317</td>
+      <td>67.114398</td>
+      <td>54.930000</td>
+      <td>50.799999</td>
+      <td>...</td>
+      <td>4.900736</td>
+      <td>-1.232571e+08</td>
+      <td>NaN</td>
+      <td>37.529625</td>
+      <td>-54.236345</td>
+      <td>40.113450</td>
+      <td>49.019171</td>
+      <td>48.272671</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2018-11-05</th>
+      <td>63.153036</td>
+      <td>54.613530</td>
+      <td>46.074023</td>
+      <td>0.312725</td>
+      <td>31.381121</td>
+      <td>Neutral</td>
+      <td>78.868933</td>
+      <td>77.867402</td>
+      <td>52.139999</td>
+      <td>49.759998</td>
+      <td>...</td>
+      <td>4.720684</td>
+      <td>-1.360822e+08</td>
+      <td>NaN</td>
+      <td>37.041639</td>
+      <td>-57.079145</td>
+      <td>34.302688</td>
+      <td>49.342788</td>
+      <td>48.745978</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2020-10-06</th>
+      <td>138.348875</td>
+      <td>125.399501</td>
+      <td>112.450128</td>
+      <td>0.206530</td>
+      <td>54.172024</td>
+      <td>Neutral</td>
+      <td>31.246967</td>
+      <td>50.686292</td>
+      <td>135.119995</td>
+      <td>125.150002</td>
+      <td>...</td>
+      <td>9.713780</td>
+      <td>1.352882e+09</td>
+      <td>20.178407</td>
+      <td>48.428622</td>
+      <td>-38.672007</td>
+      <td>42.728684</td>
+      <td>132.350001</td>
+      <td>133.575605</td>
+      <td>131.548601</td>
+      <td>95.623291</td>
+    </tr>
+    <tr>
+      <th>2020-10-07</th>
+      <td>138.518796</td>
+      <td>125.452501</td>
+      <td>112.386207</td>
+      <td>0.208307</td>
+      <td>79.379039</td>
+      <td>Neutral</td>
+      <td>49.199414</td>
+      <td>46.141732</td>
+      <td>134.110001</td>
+      <td>129.380005</td>
+      <td>...</td>
+      <td>9.564938</td>
+      <td>1.381018e+09</td>
+      <td>19.732322</td>
+      <td>52.268168</td>
+      <td>-16.483153</td>
+      <td>49.831451</td>
+      <td>134.138573</td>
+      <td>135.507804</td>
+      <td>132.055401</td>
+      <td>95.863445</td>
+    </tr>
+    <tr>
+      <th>2020-10-08</th>
+      <td>139.695310</td>
+      <td>125.985501</td>
+      <td>112.275692</td>
+      <td>0.217641</td>
+      <td>83.204312</td>
+      <td>Neutral</td>
+      <td>55.772146</td>
+      <td>45.406176</td>
+      <td>136.610001</td>
+      <td>133.539993</td>
+      <td>...</td>
+      <td>9.130299</td>
+      <td>1.405755e+09</td>
+      <td>18.965605</td>
+      <td>53.370095</td>
+      <td>-9.943310</td>
+      <td>57.363264</td>
+      <td>135.420572</td>
+      <td>136.782528</td>
+      <td>132.528001</td>
+      <td>96.110250</td>
+    </tr>
+    <tr>
+      <th>2020-10-09</th>
+      <td>141.996039</td>
+      <td>126.955001</td>
+      <td>111.913964</td>
+      <td>0.236951</td>
+      <td>97.021374</td>
+      <td>Neutral</td>
+      <td>83.294339</td>
+      <td>62.755300</td>
+      <td>141.389999</td>
+      <td>136.960007</td>
+      <td>...</td>
+      <td>8.928135</td>
+      <td>1.430164e+09</td>
+      <td>17.616138</td>
+      <td>56.673091</td>
+      <td>-0.900041</td>
+      <td>64.342049</td>
+      <td>137.913431</td>
+      <td>139.403519</td>
+      <td>133.084601</td>
+      <td>96.386550</td>
+    </tr>
+    <tr>
+      <th>2020-10-12</th>
+      <td>147.458290</td>
+      <td>128.269001</td>
+      <td>109.079712</td>
+      <td>0.299204</td>
+      <td>117.722658</td>
+      <td>Sell</td>
+      <td>90.841647</td>
+      <td>76.636044</td>
+      <td>158.729996</td>
+      <td>146.860001</td>
+      <td>...</td>
+      <td>9.549696</td>
+      <td>1.466805e+09</td>
+      <td>18.085055</td>
+      <td>62.874384</td>
+      <td>-9.019373</td>
+      <td>64.782233</td>
+      <td>144.046286</td>
+      <td>146.150660</td>
+      <td>133.782201</td>
+      <td>96.717500</td>
+    </tr>
+  </tbody>
+</table>
+<p>491 rows × 26 columns</p>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">info</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+DatetimeIndex: 510 entries, 2018-10-03 to 2020-10-12
+Data columns (total 20 columns):
+ #   Column                     Non-Null Count  Dtype  
+---  ------                     --------------  -----  
+ 0   STOCH_slowk                502 non-null    float64
+ 1   STOCH_slowd                502 non-null    float64
+ 2   High                       510 non-null    float64
+ 3   Low                        510 non-null    float64
+ 4   Open                       510 non-null    float64
+ 5   Close                      510 non-null    float64
+ 6   Volume                     510 non-null    float64
+ 7   Adj Close                  510 non-null    float64
+ 8   Daily_Returns              509 non-null    float64
+ 9   Price_Up_or_Down           510 non-null    int32  
+ 10  Average_True_Range         496 non-null    float64
+ 11  On_Balance_Volume          510 non-null    float64
+ 12  ADX                        483 non-null    float64
+ 13  RSI                        496 non-null    float64
+ 14  William_%R                 497 non-null    float64
+ 15  MFI                        496 non-null    float64
+ 16  Linear_Regression          497 non-null    float64
+ 17  Time_Series_Forecast       497 non-null    float64
+ 18  Simple_Moving_Average_50   461 non-null    float64
+ 19  Simple_Moving_Average_200  311 non-null    float64
+dtypes: float64(19), int32(1)
+memory usage: 101.7 KB
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stocks_bollingerbands</span><span class="p">.</span><span class="n">info</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+DatetimeIndex: 491 entries, 2018-10-30 to 2020-10-12
+Data columns (total 6 columns):
+ #   Column         Non-Null Count  Dtype  
+---  ------         --------------  -----  
+ 0   BB_upperband   491 non-null    float64
+ 1   BB_middleband  491 non-null    float64
+ 2   BB_lowerband   491 non-null    float64
+ 3   BB_Width       491 non-null    float64
+ 4   Percent_B      491 non-null    float64
+ 5   Action         491 non-null    object 
+dtypes: float64(5), object(1)
+memory usage: 46.9+ KB
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stocks_df</span><span class="p">.</span><span class="n">info</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+DatetimeIndex: 491 entries, 2018-10-30 to 2020-10-12
+Data columns (total 26 columns):
+ #   Column                     Non-Null Count  Dtype  
+---  ------                     --------------  -----  
+ 0   BB_upperband               491 non-null    float64
+ 1   BB_middleband              491 non-null    float64
+ 2   BB_lowerband               491 non-null    float64
+ 3   BB_Width                   491 non-null    float64
+ 4   Percent_B                  491 non-null    float64
+ 5   Action                     491 non-null    object 
+ 6   STOCH_slowk                491 non-null    float64
+ 7   STOCH_slowd                491 non-null    float64
+ 8   High                       491 non-null    float64
+ 9   Low                        491 non-null    float64
+ 10  Open                       491 non-null    float64
+ 11  Close                      491 non-null    float64
+ 12  Volume                     491 non-null    float64
+ 13  Adj Close                  491 non-null    float64
+ 14  Daily_Returns              491 non-null    float64
+ 15  Price_Up_or_Down           491 non-null    int32  
+ 16  Average_True_Range         491 non-null    float64
+ 17  On_Balance_Volume          491 non-null    float64
+ 18  ADX                        483 non-null    float64
+ 19  RSI                        491 non-null    float64
+ 20  William_%R                 491 non-null    float64
+ 21  MFI                        491 non-null    float64
+ 22  Linear_Regression          491 non-null    float64
+ 23  Time_Series_Forecast       491 non-null    float64
+ 24  Simple_Moving_Average_50   461 non-null    float64
+ 25  Simple_Moving_Average_200  311 non-null    float64
+dtypes: float64(24), int32(1), object(1)
+memory usage: 121.7+ KB
+</code></pre></div></div>
+
+<h2 id="step-4-download-dataframes-to-csv">Step 4: Download dataframes to csv</h2>
+
+<p>Power BI only supports the following python packages: <a href="https://powerbi.microsoft.com/en-us/blog/python-visualizations-in-power-bi-service/">source</a></p>
+
+<p><em>matplotlib</em></p>
+
+<p><em>numpy</em></p>
+
+<p><em>pandas</em></p>
+
+<p><em>scikit-learn</em></p>
+
+<p><em>scipy</em></p>
+
+<p><em>seaborn</em></p>
+
+<p><em>statsmodels</em></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## send to CSV file
+</span>
+<span class="n">df</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">r"C:\TQQQ_df.csv"</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">','</span><span class="p">)</span>
+<span class="n">stocks_bollingerbands</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">r"C:\TQQQ_bbands.csv"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<h2 id="step-5-create-visual-dashboard-in-power-bi-using-the-dataframes">Step 5: Create visual dashboard in Power BI using the dataframes</h2>
+
+<p><img src="attachment:Power%20BI%20-%20Stock%20Price%20Indicator%20Dashboard.PNG" alt="Power%20BI%20-%20Stock%20Price%20Indicator%20Dashboard.PNG" /></p>
+
+<h2 id="references">References</h2>
+
+<p><a href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/percent-b#:~:text=How%20this%20indicator%20works,Percent%20B%20is%2050%20percent.">Fidelity, Percent B (% B).</a> Accessed October 1, 2020.</p>
+
+<p><a href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/bollinger-band-width">Fidelity, Bollinger Band® Width.</a> Accessed October 1, 2020.</p>
+
+<p><a href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/bollinger-bands">Fidelity, Bollinger Bands®.</a> Accessed October 1, 2020.</p>
+
+<p><a href="https://github.com/mrjbq7/ta-lib">TA-lib python library.</a> Accessed October 1, 2020.</p>
+
+<p><a href="https://school.stockcharts.com/doku.php?id=technical_indicators:williams_r">Williams %R.</a> Accessed October 9, 2020</p>
+
+<p><a href="https://www.investopedia.com/terms/m/mfi.asp">Money Flow Index</a>Accessed October 9, 2020.</p>
+
+<p><a href="https://www.investopedia.com/terms/r/rsi.asp">Relative Strength Index</a>Accessed October 9, 2020.</p>
+
+<p><a href="https://www.investopedia.com/articles/trading/07/adx-trend-indicator.asp">ADX: The Trend Strength Indicator</a>Accessed October 9, 2020.</p>
+
+<p><a href="https://www.bollingerbands.com/bollinger-band-rules">Bollinger Bands Rules.</a> Accessed October 1, 2020.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
