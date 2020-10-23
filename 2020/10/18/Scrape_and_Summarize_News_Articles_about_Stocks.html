@@ -8,15 +8,15 @@
 <meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Scrape and Summarize News Articles using Python" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This is a blog to capture my learnings as a data analyst." />
-<meta property="og:description" content="This is a blog to capture my learnings as a data analyst." />
+<meta name="description" content="Original post created 18-October-2020. Updated 23-October-2020" />
+<meta property="og:description" content="Original post created 18-October-2020. Updated 23-October-2020" />
 <link rel="canonical" href="https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html" />
 <meta property="og:url" content="https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html" />
 <meta property="og:site_name" content="My Data Analyst Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-10-18T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html","@type":"BlogPosting","headline":"Scrape and Summarize News Articles using Python","dateModified":"2020-10-18T00:00:00-05:00","datePublished":"2020-10-18T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html"},"description":"This is a blog to capture my learnings as a data analyst.","@context":"https://schema.org"}</script>
+{"url":"https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html","@type":"BlogPosting","headline":"Scrape and Summarize News Articles using Python","dateModified":"2020-10-18T00:00:00-05:00","datePublished":"2020-10-18T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html"},"description":"Original post created 18-October-2020. Updated 23-October-2020","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/my-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://ijeomaodoko.github.io/my-blog/feed.xml" title="My Data Analyst Blog" /><link rel="shortcut icon" type="image/x-icon" href="/my-blog/images/favicon.ico"><link href="https://cdn.jsdelivr.net/npm/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
@@ -71,7 +71,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Scrape and Summarize News Articles using Python</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-10-18T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Scrape and Summarize News Articles using Python</h1><p class="page-description">Original post created 18-October-2020. Updated 23-October-2020</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-10-18T00:00:00-05:00" itemprop="datePublished">
         Oct 18, 2020
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -119,9 +119,14 @@ window.onload = wrap_img;
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>toc:true- branch: master- badges: true- comments: true</p>
-<p>author: Ijeoma Odoko</p>
-<p>categories: [python, nlp, scrape_website, jupyter]</p>
+<ul>
+<li>toc: false</li>
+<li>branch: master</li>
+<li>badges: true</li>
+<li>comments: true</li>
+<li>author: Ijeoma Odoko</li>
+<li>categories: [python, nlp, scrape_website]</li>
+</ul>
 
 </div>
 </div>
@@ -173,54 +178,55 @@ window.onload = wrap_img;
 Requirement already satisfied: six in /usr/local/lib/python3.6/dist-packages (from nltk) (1.15.0)
 Collecting newspaper3k
   Downloading https://files.pythonhosted.org/packages/d7/b9/51afecb35bb61b188a4b44868001de348a0e8134b4dfa00ffc191567c4b9/newspaper3k-0.2.8-py3-none-any.whl (211kB)
-     |████████████████████████████████| 215kB 2.8MB/s 
-Requirement already satisfied: Pillow&gt;=3.3.0 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (7.0.0)
-Requirement already satisfied: requests&gt;=2.10.0 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (2.23.0)
-Collecting feedfinder2&gt;=0.0.4
-  Downloading https://files.pythonhosted.org/packages/35/82/1251fefec3bb4b03fd966c7e7f7a41c9fc2bb00d823a34c13f847fd61406/feedfinder2-0.0.4.tar.gz
+     |████████████████████████████████| 215kB 6.5MB/s 
 Collecting tinysegmenter==0.3
   Downloading https://files.pythonhosted.org/packages/17/82/86982e4b6d16e4febc79c2a1d68ee3b707e8a020c5d2bc4af8052d0f136a/tinysegmenter-0.3.tar.gz
-Requirement already satisfied: lxml&gt;=3.6.0 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (4.2.6)
+Requirement already satisfied: nltk&gt;=3.2.1 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (3.2.5)
+Collecting tldextract&gt;=2.0.1
+  Downloading https://files.pythonhosted.org/packages/5d/c3/f4e90ae5b7dd02257c3b9dfb6747aba0b8a9c788f5401700fda055e814fc/tldextract-3.0.1-py2.py3-none-any.whl (86kB)
+     |████████████████████████████████| 92kB 5.2MB/s 
+Collecting feedfinder2&gt;=0.0.4
+  Downloading https://files.pythonhosted.org/packages/35/82/1251fefec3bb4b03fd966c7e7f7a41c9fc2bb00d823a34c13f847fd61406/feedfinder2-0.0.4.tar.gz
+Requirement already satisfied: PyYAML&gt;=3.11 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (3.13)
+Requirement already satisfied: requests&gt;=2.10.0 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (2.23.0)
+Requirement already satisfied: Pillow&gt;=3.3.0 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (7.0.0)
 Collecting jieba3k&gt;=0.35.1
   Downloading https://files.pythonhosted.org/packages/a9/cb/2c8332bcdc14d33b0bedd18ae0a4981a069c3513e445120da3c3f23a8aaa/jieba3k-0.35.1.zip (7.4MB)
-     |████████████████████████████████| 7.4MB 7.2MB/s 
-Requirement already satisfied: nltk&gt;=3.2.1 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (3.2.5)
-Requirement already satisfied: python-dateutil&gt;=2.5.3 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (2.8.1)
-Collecting cssselect&gt;=0.9.2
-  Downloading https://files.pythonhosted.org/packages/3b/d4/3b5c17f00cce85b9a1e6f91096e1cc8e8ede2e1be8e96b87ce1ed09e92c5/cssselect-1.1.0-py2.py3-none-any.whl
+     |████████████████████████████████| 7.4MB 7.1MB/s 
 Collecting feedparser&gt;=5.2.1
   Downloading https://files.pythonhosted.org/packages/2c/84/df6de99cba01afc82344c9cb3a79df100a00ac33396120f8aa66c72f0d84/feedparser-6.0.1-py2.py3-none-any.whl (80kB)
-     |████████████████████████████████| 81kB 8.0MB/s 
+     |████████████████████████████████| 81kB 10.7MB/s 
+Collecting cssselect&gt;=0.9.2
+  Downloading https://files.pythonhosted.org/packages/3b/d4/3b5c17f00cce85b9a1e6f91096e1cc8e8ede2e1be8e96b87ce1ed09e92c5/cssselect-1.1.0-py2.py3-none-any.whl
+Requirement already satisfied: lxml&gt;=3.6.0 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (4.2.6)
+Requirement already satisfied: python-dateutil&gt;=2.5.3 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (2.8.1)
 Requirement already satisfied: beautifulsoup4&gt;=4.4.1 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (4.6.3)
-Requirement already satisfied: PyYAML&gt;=3.11 in /usr/local/lib/python3.6/dist-packages (from newspaper3k) (3.13)
-Collecting tldextract&gt;=2.0.1
-  Downloading https://files.pythonhosted.org/packages/12/cf/d0ff82625e53bd245d6173ce6333d190abbfcd94e4c30e54b4e16b474216/tldextract-2.2.3-py2.py3-none-any.whl (48kB)
-     |████████████████████████████████| 51kB 5.4MB/s 
-Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /usr/local/lib/python3.6/dist-packages (from requests&gt;=2.10.0-&gt;newspaper3k) (3.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.6/dist-packages (from requests&gt;=2.10.0-&gt;newspaper3k) (2020.6.20)
-Requirement already satisfied: idna&lt;3,&gt;=2.5 in /usr/local/lib/python3.6/dist-packages (from requests&gt;=2.10.0-&gt;newspaper3k) (2.10)
-Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /usr/local/lib/python3.6/dist-packages (from requests&gt;=2.10.0-&gt;newspaper3k) (1.24.3)
-Requirement already satisfied: six in /usr/local/lib/python3.6/dist-packages (from feedfinder2&gt;=0.0.4-&gt;newspaper3k) (1.15.0)
-Collecting sgmllib3k
-  Downloading https://files.pythonhosted.org/packages/9e/bd/3704a8c3e0942d711c1299ebf7b9091930adae6675d7c8f476a7ce48653c/sgmllib3k-1.0.0.tar.gz
+Requirement already satisfied: six in /usr/local/lib/python3.6/dist-packages (from nltk&gt;=3.2.1-&gt;newspaper3k) (1.15.0)
+Requirement already satisfied: filelock&gt;=3.0.8 in /usr/local/lib/python3.6/dist-packages (from tldextract&gt;=2.0.1-&gt;newspaper3k) (3.0.12)
 Collecting requests-file&gt;=1.4
   Downloading https://files.pythonhosted.org/packages/77/86/cdb5e8eaed90796aa83a6d9f75cfbd37af553c47a291cd47bc410ef9bdb2/requests_file-1.5.1-py2.py3-none-any.whl
-Building wheels for collected packages: feedfinder2, tinysegmenter, jieba3k, sgmllib3k
-  Building wheel for feedfinder2 (setup.py) ... done
-  Created wheel for feedfinder2: filename=feedfinder2-0.0.4-cp36-none-any.whl size=3355 sha256=9b378c817e2d8dd6726f241fe7b31d486eb574e69b695ef06d9c4bb8bb0944f0
-  Stored in directory: /root/.cache/pip/wheels/de/03/ca/778e3a7a627e3d98836cc890e7cb40c7575424cfd3340f40ed
+Requirement already satisfied: idna in /usr/local/lib/python3.6/dist-packages (from tldextract&gt;=2.0.1-&gt;newspaper3k) (2.10)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.6/dist-packages (from requests&gt;=2.10.0-&gt;newspaper3k) (2020.6.20)
+Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /usr/local/lib/python3.6/dist-packages (from requests&gt;=2.10.0-&gt;newspaper3k) (3.0.4)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /usr/local/lib/python3.6/dist-packages (from requests&gt;=2.10.0-&gt;newspaper3k) (1.24.3)
+Collecting sgmllib3k
+  Downloading https://files.pythonhosted.org/packages/9e/bd/3704a8c3e0942d711c1299ebf7b9091930adae6675d7c8f476a7ce48653c/sgmllib3k-1.0.0.tar.gz
+Building wheels for collected packages: tinysegmenter, feedfinder2, jieba3k, sgmllib3k
   Building wheel for tinysegmenter (setup.py) ... done
-  Created wheel for tinysegmenter: filename=tinysegmenter-0.3-cp36-none-any.whl size=13538 sha256=379c3fda35e5d775afe6146d50e62c734e4eddd2a1dc01c002d1b52c268974c2
+  Created wheel for tinysegmenter: filename=tinysegmenter-0.3-cp36-none-any.whl size=13538 sha256=21d80e684d759950290a5522214b146594a5846d32b0ca24500b2fddca70553e
   Stored in directory: /root/.cache/pip/wheels/81/2b/43/a02ede72324dd40cdd7ca53aad718c7710628e91b8b0dc0f02
+  Building wheel for feedfinder2 (setup.py) ... done
+  Created wheel for feedfinder2: filename=feedfinder2-0.0.4-cp36-none-any.whl size=3355 sha256=f080f14c61ae68c7a747068c93d0abf2acb08950d0cae3dc16a21a1857a781d1
+  Stored in directory: /root/.cache/pip/wheels/de/03/ca/778e3a7a627e3d98836cc890e7cb40c7575424cfd3340f40ed
   Building wheel for jieba3k (setup.py) ... done
-  Created wheel for jieba3k: filename=jieba3k-0.35.1-cp36-none-any.whl size=7398406 sha256=e2365d0cf0ef7b7f001cc25dd4759e7ad45ab6c8067d7632fdca8329959412d2
+  Created wheel for jieba3k: filename=jieba3k-0.35.1-cp36-none-any.whl size=7398406 sha256=a36c59aa31ede8f68ac300bf99f8eed3d23c555646fcd8d810de80648a540526
   Stored in directory: /root/.cache/pip/wheels/83/15/9c/a3f1f67e7f7181170ad37d32e503c35da20627c013f438ed34
   Building wheel for sgmllib3k (setup.py) ... done
-  Created wheel for sgmllib3k: filename=sgmllib3k-1.0.0-cp36-none-any.whl size=6067 sha256=723c9173233e7db1a215a873cbf42cd81a1f826281bfa2e5f0a385fe90e6da93
+  Created wheel for sgmllib3k: filename=sgmllib3k-1.0.0-cp36-none-any.whl size=6067 sha256=65eb0a2526fecb90fd3c1fb03c6fb531514631316c5b46f960ac526206787c77
   Stored in directory: /root/.cache/pip/wheels/f1/80/5a/444ba08a550cdd241bd9baf8bae44be750efe370adb944506a
-Successfully built feedfinder2 tinysegmenter jieba3k sgmllib3k
-Installing collected packages: feedfinder2, tinysegmenter, jieba3k, cssselect, sgmllib3k, feedparser, requests-file, tldextract, newspaper3k
-Successfully installed cssselect-1.1.0 feedfinder2-0.0.4 feedparser-6.0.1 jieba3k-0.35.1 newspaper3k-0.2.8 requests-file-1.5.1 sgmllib3k-1.0.0 tinysegmenter-0.3 tldextract-2.2.3
+Successfully built tinysegmenter feedfinder2 jieba3k sgmllib3k
+Installing collected packages: tinysegmenter, requests-file, tldextract, feedfinder2, jieba3k, sgmllib3k, feedparser, cssselect, newspaper3k
+Successfully installed cssselect-1.1.0 feedfinder2-0.0.4 feedparser-6.0.1 jieba3k-0.35.1 newspaper3k-0.2.8 requests-file-1.5.1 sgmllib3k-1.0.0 tinysegmenter-0.3 tldextract-3.0.1
 </pre>
 </div>
 </div>
@@ -283,19 +289,15 @@ Successfully installed cssselect-1.1.0 feedfinder2-0.0.4 feedparser-6.0.1 jieba3
 <pre>http://ir.nasdaq.com/Income-Statement-Trend-Summary-and-GAAP-to-Non-GAAP-Reconciliation
 http://ir.nasdaq.com/events/event-details/barclays-global-financial-services-conference-2020
 http://ir.nasdaq.com/events/event-details/ubs-virtual-financial-services-conference-2020
-https://www.nasdaq.com/articles/nasdaqs-johan-toll-wins-fintech-person-year-2018-05-16
-https://www.nasdaq.com/articles/adena-friedman%3A-esg-ai-cryptocurrency-in-focus-at-davos-2019-01-21
-https://www.nasdaq.com/article/invesco-qqq-celebrates-20-years-of-curating-innovation-cm1112647?utm_source=Nasdaq_LINKEDIN_COMPANY_2185074219&amp;utm_medium=QQQ%20anniversary%20__%20%C2%A0
-https://www.nasdaq.com/solutions/midpoint-extended-life-order-m-elo
 https://www.nasdaq.com/videos/tradetalks%3A-what-trends-will-dominate-the-next-decade
 https://www.nasdaq.com/videos/can-stock-picking-ever-be-fun-again
-https://www.nasdaq.com/videos/tradetalks%3A-the-need-to-invest-in-community-services-to-address-racial-and-social-health
-https://www.nasdaq.com/videos/tradetalks%3A-how-holiday2020-is-going-to-look-a-little-different
-https://www.nasdaq.com/videos/tradetalks%3A-trends-in-volatility-volq-and-vlq-futures-and-a-trade-that-potentially-isolates
-https://www.nasdaq.com/videos/tradetalks%3A-expansion-investor-behavior-and-the-online-brokerage-environment-in-asia
-https://www.nasdaq.com/videos/tradetalks%3A-whats-driving-the-heightened-volatility-in-the-market
-https://www.nasdaq.com/videos/tradetalks%3A-opportunities-in-the-market-for-investors-and-traders
-https://www.nasdaq.com/videos/tradetalks%3A-the-launch-of-the-companys-equality-diversity-and-inclusion-initiative-lila
+https://www.nasdaq.com/videos/tradetalks%3A-how-will-2020-impact-investment-portfolios
+https://www.nasdaq.com/videos/tradetalks%3A-the-toys-for-tots-campaign-for-holiday-2020
+https://www.nasdaq.com/videos/tradetalks%3A-the-launch-of-jaaa-and-democratizing-access-to-clos
+https://www.nasdaq.com/videos/tradetalks%3A-what-paypals-cryptocurrency-means-for-growth-in-the-space
+https://www.nasdaq.com/videos/tradetalks%3A-how-do-franchise-businesses-properly-open-while-protecting-staff-and-customers
+https://www.nasdaq.com/videos/tradetalks%3A-volatility-around-elections-is-normal
+https://www.nasdaq.com/videos/tradetalks%3A-finding-the-best-credit-card-for-you-credit-best-practices-and-rewards-trends
 https://www.nasdaq.com/videos/investing-strategies%3A-crowdstrike-ceo-insights-how-to-handle-election-2020-market-volatility
 https://www.nasdaq.com/videos/investing-strategies%3A-long-term-investing%3A-tips-to-maximize-returns-as-you-set-and-forget
 https://www.nasdaq.com/videos/investing-strategies%3A-election-2020%3A-how-to-handle-your-portfolio-amid-market-moving
@@ -306,42 +308,48 @@ https://www.nasdaq.com/videos/investing-strategies%3A-virgin-galactic-draftkings
 https://www.nasdaq.com/videos/investing-strategies%3A-analyzing-strength-of-large-cap-tech-stocks-in-current-bull-market
 https://www.nasdaq.com/videos/investing-strategies%3A-health-care-trends-to-watch-with-medical-sector-on-the-move
 https://www.nasdaq.com/videos/investing-strategies%3A-trader-education%3A-ibds-top-investing-rules-for-beginners
+https://www.nasdaq.com/videos/how-clean-is-the-fashion-industry
+https://www.nasdaq.com/videos/whiskey-as-a-covid-19-hedge
+https://www.nasdaq.com/videos/a-cyclical-move-overall-in-the-markets-is-afoot-bofas-hyzy-says
+https://www.nasdaq.com/videos/ignoring-science-led-to-over-200000-u.s.-deaths%3A-johns-hopkins
 https://www.nasdaq.com/videos/markets-undergoing-a-reality-check%3A-fidelitys-richards
 https://www.nasdaq.com/videos/its-getting-tougher-for-opec-to-cut-oil-output%3A-nomura
-https://www.nasdaq.com/videos/how-goldmans-koch-is-positioning-ahead-of-the-election
-https://www.nasdaq.com/videos/abby-joseph-cohen-says-blue-wave-could-bring-markets-more-policy-certainty
-https://www.nasdaq.com/videos/yales-roach-says-lack-of-stimulus-sets-economy-up-for-relapse
-https://www.nasdaq.com/videos/oil-range-from-%2439-to-%2445-for-next-month%3A-daman-investments
-https://www.nasdaq.com/videos/morgan-stanleys-caron-says-owning-duration-makes-sense-here
 https://www.nasdaq.com/news-and-insights/in-the-money-with-fidelity-investments-dan-nathan
-https://www.nasdaq.com/articles/what-apple-aapl-investors-can-expect-following-tomorrows-event-2020-10-12
+https://www.nasdaq.com/articles/iphone-12-could-be-a-tailwind-for-apples-accessories-segment-says-analyst-2020-10-23
+https://www.nasdaq.com/articles/covid-19-is-driving-a-surge-in-e-commerce-ad-spending-2020-10-23
+https://www.nasdaq.com/articles/the-pandemic-shopping-list%3A-dolls-detergent-and-campers-2020-10-23
+https://www.nasdaq.com/articles/the-advantages-of-blockchain-over-traditional-payments-2020-10-23
+https://www.nasdaq.com/articles/forget-5g%3A-this-tech-stock-trend-is-generating-even-bigger-returns-2020-10-23
+https://www.nasdaq.com/articles/whats-happening-with-moderna-stock-2020-10-19
 https://www.nasdaq.com/articles/3-top-5g-stocks-to-buy-right-now-2020-10-09
-https://www.nasdaq.com/articles/why-cloudflare-stock-soared-on-monday-2020-10-12
-https://www.nasdaq.com/articles/delta-airlines-dal-3rd-quarter-earnings%3A-what-to-expect-2020-10-12
-https://www.nasdaq.com/articles/weekly-preview%3A-stocks-to-watch-amzn-intc-msft-nflx-tsla-2020-10-18
-https://www.nasdaq.com/articles/wells-fargo-wfc-3rd-quarter-earnings%3A-what-to-expect-2020-10-13
-https://www.nasdaq.com/articles/bank-of-america-bac-3rd-quarter-earnings%3A-what-to-expect-2020-10-13
-https://www.nasdaq.com/articles/stay-at-home-stocks-can-still-thrive-even-when-covid-19-retreats-2020-10-16
-https://www.nasdaq.com/articles/fastlys-fsly-drop-has-created-an-opportunity-but-its-not-where-you-probably-think-2020-10
-https://www.nasdaq.com/articles/the-case-against-another-airline-bailout-2020-10-14
-https://www.nasdaq.com/articles/2-picks-in-the-booming-used-car-industry-2020-10-13
-https://www.nasdaq.com/articles/daily-markets%3A-weakening-economic-data-and-rising-political-uncertainty-weigh-on-investors
-https://www.nasdaq.com/articles/wall-street-bank-trading-boom-does-little-to-assuage-concerns-about-lending-2020-10-16
-https://www.nasdaq.com/articles/4-top-stock-trades-for-monday%3A-pton-pfe-fsly-spaq-2020-10-16
-https://www.nasdaq.com/articles/3-biotech-stocks-to-buy-right-now-2020-10-16
-https://www.nasdaq.com/articles/buy-the-next-dip-in-red-hot-nvidia-stock-2020-10-16
-https://www.nasdaq.com/articles/get-ready-to-bull-trade-novavax-stock-for-a-second-wave-2020-10-16
-https://www.nasdaq.com/articles/gol-american-airlines-codeshare-pact-to-boost-connectivity-2020-10-17
-https://www.nasdaq.com/articles/this-decades-stock-leaders-2020-10-16
-https://www.nasdaq.com/articles/what-taiwan-semiconductor-earnings-indicate-about-these-top-tech-players-2020-10-16
-https://www.nasdaq.com/articles/enbridge-enb-outpaces-stock-market-gains%3A-what-you-should-know-2020-10-16
-https://www.nasdaq.com/articles/dominion-energy-d-outpaces-stock-market-gains%3A-what-you-should-know-2020-10-16
-https://www.nasdaq.com/articles/united-parcel-service-ups-outpaces-stock-market-gains%3A-what-you-should-know-2020-10-16
-https://www.nasdaq.com/articles/anaplan-plan-outpaces-stock-market-gains%3A-what-you-should-know-2020-10-16
 https://www.nasdaq.com/articles/3-high-yield-stocks-at-rock-bottom-prices-2020-10-16
-https://www.nasdaq.com/articles/making-a-portfolio-election-proof-2020-10-12
-https://www.nasdaq.com/articles/getting-in-the-game-with-a-high-flying-video-game-etf-2020-10-16
-https://www.nasdaq.com/articles/canaccord-predicts-over-100-rally-for-these-3-strong-buy-stocks-2020-10-16
+https://www.nasdaq.com/articles/workhorse-stock-could-skyrocket-on-a-u.s.-postal-service-contract-2020-10-16
+https://www.nasdaq.com/articles/intel-intc-3rd-quarter-earnings%3A-what-to-expect-2020-10-22
+https://www.nasdaq.com/articles/microsoft-msft-1st-quarter-earnings%3A-what-to-expect-2020-10-21
+https://www.nasdaq.com/articles/tesla-tsla-3rd-quarter-earnings%3A-what-to-expect-2020-10-21
+https://www.nasdaq.com/articles/netflix-nflx-3rd-quarter-earnings%3A-what-to-expect-2020-10-20
+https://www.nasdaq.com/articles/is-the-market-reaction-to-intels-intc-earnings-overdone-2020-10-23
+https://www.nasdaq.com/articles/the-market-is-focused-on-stimulus-will-it-come-soon-or-at-all-2020-10-22
+https://www.nasdaq.com/articles/the-reaction-to-netflixs-nflx-earnings%3A-deja-vu-all-over-again-2020-10-21
+https://www.nasdaq.com/articles/u.s.-debt%3A-the-elephant-in-the-room-that-keeps-growing-2020-10-19
+https://www.nasdaq.com/articles/daily-markets%3A-stocks-could-hinge-on-news-from-washington-on-stimulus-or-lack-thereof-2020
+https://www.nasdaq.com/articles/wall-st-week-ahead-more-u.s.-companies-offer-earnings-guidance-despite-pandemic-2020-10-23
+https://www.nasdaq.com/articles/why-investors-should-be-upbeat-about-exxon-mobil-2020-10-21
+https://www.nasdaq.com/articles/top-stock-trades-for-thursday%3A-snap-fb-pins-pypl-2020-10-21
+https://www.nasdaq.com/articles/plug-workhorse-stock-into-your-trading-portfolio-because-it-is-electric-2020-10-21
+https://www.nasdaq.com/articles/how-good-is-the-surf-in-ocean-power-technologies-stock-2020-10-21
+https://www.nasdaq.com/articles/bp-bp-stock-sinks-as-market-gains%3A-what-you-should-know-2020-10-23
+https://www.nasdaq.com/articles/target-tgt-outpaces-stock-market-gains%3A-what-you-should-know-2020-10-23
+https://www.nasdaq.com/articles/united-parcel-service-ups-stock-sinks-as-market-gains%3A-what-you-should-know-2020-10-23
+https://www.nasdaq.com/articles/hanesbrands-hbi-stock-sinks-as-market-gains%3A-what-you-should-know-2020-10-23
+https://www.nasdaq.com/articles/dominion-energy-d-stock-sinks-as-market-gains%3A-what-you-should-know-2020-10-23
+https://www.nasdaq.com/articles/noble-midstream-partners-nblx-stock-sinks-as-market-gains%3A-what-you-should-know-2020-10-23
+https://www.nasdaq.com/articles/ciena-cien-stock-sinks-as-market-gains%3A-what-you-should-know-2020-10-23
+https://www.nasdaq.com/articles/enbridge-enb-stock-sinks-as-market-gains%3A-what-you-should-know-2020-10-23
+https://www.nasdaq.com/articles/nasdaqs-johan-toll-wins-fintech-person-year-2018-05-16
+https://www.nasdaq.com/articles/adena-friedman%3A-esg-ai-cryptocurrency-in-focus-at-davos-2019-01-21
+https://www.nasdaq.com/article/invesco-qqq-celebrates-20-years-of-curating-innovation-cm1112647?utm_source=Nasdaq_LINKEDIN_COMPANY_2185074219&amp;utm_medium=QQQ%20anniversary%20__%20%C2%A0
+https://www.nasdaq.com/solutions/midpoint-extended-life-order-m-elo
 </pre>
 </div>
 </div>
@@ -374,19 +382,19 @@ https://www.nasdaq.com/articles/canaccord-predicts-over-100-rally-for-these-3-st
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>https://www.nasdaq.com/market-activity/index/ndx/news-headlines
-https://www.nasdaq.com/public-policy
+https://www.nasdaq.com/mediakit
+https://www.nasdaq.com/GlobalIndexes
+https://www.nasdaq.com/TotalMarkets
+https://www.nasdaq.com/marketsite
 http://ir.nasdaq.com
+https://www.nasdaq.com/public-policy
+https://www.nasdaq.com/videos
+https://www.nasdaq.com
+https://www.nasdaq.com/symbol
 https://www.nasdaq.com/solutions
 https://portfolio.nasdaq.com
-https://www.nasdaq.com/ESG-Guide
-https://www.nasdaq.com/mediakit
-https://www.nasdaq.com/videos
-https://www.nasdaq.com/symbol
-https://www.nasdaq.com
-https://www.nasdaq.com/TotalMarkets
 https://www.nasdaq.com/trust-center
-https://www.nasdaq.com/marketsite
-https://www.nasdaq.com/GlobalIndexes
+https://www.nasdaq.com/ESG-Guide
 </pre>
 </div>
 </div>
@@ -488,13 +496,13 @@ https://www.nasdaq.com/GlobalIndexes
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;reconciliation&#39;,
- &#39;nongaap&#39;,
- &#39;summary&#39;,
- &#39;gaap&#39;,
+<pre>[&#39;nongaap&#39;,
  &#39;trend&#39;,
- &#39;statement&#39;,
- &#39;income&#39;]</pre>
+ &#39;income&#39;,
+ &#39;gaap&#39;,
+ &#39;summary&#39;,
+ &#39;reconciliation&#39;,
+ &#39;statement&#39;]</pre>
 </div>
 
 </div>
@@ -688,7 +696,7 @@ https://www.nasdaq.com/GlobalIndexes
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>62</pre>
+<pre>64</pre>
 </div>
 
 </div>
@@ -761,7 +769,7 @@ https://www.nasdaq.com/GlobalIndexes
       <td>NaT</td>
       <td>[]</td>
       <td></td>
-      <td>[reconciliation, nongaap, summary, gaap, trend...</td>
+      <td>[nongaap, trend, income, gaap, summary, reconc...</td>
       <td>[]</td>
     </tr>
     <tr>
@@ -771,7 +779,7 @@ https://www.nasdaq.com/GlobalIndexes
       <td>NaT</td>
       <td>[]</td>
       <td></td>
-      <td>[2020, conference, services, global, barclays,...</td>
+      <td>[financial, services, barclays, 2020, global, ...</td>
       <td>[]</td>
     </tr>
     <tr>
@@ -781,27 +789,27 @@ https://www.nasdaq.com/GlobalIndexes
       <td>NaT</td>
       <td>[]</td>
       <td></td>
-      <td>[ubs, virtual, 2020, conference, services, fin...</td>
+      <td>[financial, services, ubs, virtual, 2020, conf...</td>
       <td>[]</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>https://www.nasdaq.com/articles/nasdaqs-johan-...</td>
-      <td>Nasdaq's Johan Toll Wins FinTech Person of the...</td>
-      <td>2018-05-16</td>
+      <td>https://www.nasdaq.com/videos/tradetalks%3A-wh...</td>
+      <td>#TradeTalks: What Trends Will Dominate the Nex...</td>
+      <td>NaT</td>
       <td>[]</td>
-      <td>Johan Toll, head of Blockchain Product Managem...</td>
-      <td>[person, framework, wins, technology, toll, ma...</td>
+      <td>Caleb Silver from Investopedia returns to #Tra...</td>
+      <td>[investopedia, silver, decade, tradetalks, ret...</td>
       <td>[]</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>https://www.nasdaq.com/articles/adena-friedman...</td>
-      <td>Adena Friedman: ESG, AI, Cryptocurrency In Foc...</td>
-      <td>2019-01-21</td>
+      <td>https://www.nasdaq.com/videos/can-stock-pickin...</td>
+      <td>Can Stock Picking Ever be Fun Again?</td>
+      <td>NaT</td>
       <td>[]</td>
-      <td>The world economy is growing more slowly than ...</td>
-      <td>[davos, cryptocurrency, wrote, markets, econom...</td>
+      <td>Michael Holland, Holland &amp; Co. founder, talks ...</td>
+      <td>[picking, surveillance, strategy, stock, bloom...</td>
       <td>[]</td>
     </tr>
     <tr>
@@ -815,58 +823,58 @@ https://www.nasdaq.com/GlobalIndexes
       <td>...</td>
     </tr>
     <tr>
-      <th>57</th>
-      <td>https://www.nasdaq.com/articles/anaplan-plan-o...</td>
-      <td>Anaplan (PLAN) Outpaces Stock Market Gains: Wh...</td>
-      <td>2020-10-16</td>
-      <td>[Zacks Equity Research]</td>
-      <td>In the latest trading session, Anaplan (PLAN) ...</td>
-      <td>[gained, gains, latest, share, plan, estimate,...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>58</th>
-      <td>https://www.nasdaq.com/articles/3-high-yield-s...</td>
-      <td>3 High-Yield Stocks at Rock-Bottom Prices</td>
-      <td>2020-10-16</td>
-      <td>[James Brumley]</td>
-      <td>It's easy to be wary of dividend stocks right ...</td>
-      <td>[prices, lyondellbasell, dividend, right, busi...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
       <th>59</th>
-      <td>https://www.nasdaq.com/articles/making-a-portf...</td>
-      <td>Making A Portfolio Election-Proof</td>
-      <td>2020-10-12</td>
-      <td>[Lyn Alden Schwartzer]</td>
-      <td>Federal Debt GrowthThis chart shows federal de...</td>
-      <td>[r, making, debt, percentage, returns, electio...</td>
+      <td>https://www.nasdaq.com/articles/enbridge-enb-s...</td>
+      <td>Enbridge (ENB) Stock Sinks As Market Gains: Wh...</td>
+      <td>2020-10-23</td>
+      <td>[Zacks Equity Research]</td>
+      <td>In the latest trading session, Enbridge (ENB) ...</td>
+      <td>[sinks, enbridge, ratio, enb, stock, estimate,...</td>
       <td>[]</td>
     </tr>
     <tr>
       <th>60</th>
-      <td>https://www.nasdaq.com/articles/getting-in-the...</td>
-      <td>Getting in the Game with a High-Flying Video G...</td>
-      <td>2020-10-16</td>
+      <td>https://www.nasdaq.com/articles/nasdaqs-johan-...</td>
+      <td>Nasdaq's Johan Toll Wins FinTech Person of the...</td>
+      <td>2018-05-16</td>
       <td>[]</td>
-      <td>Supported by shelter-in-place directives enfor...</td>
-      <td>[espos, games, highflying, etf, game, mobile, ...</td>
+      <td>Johan Toll, head of Blockchain Product Managem...</td>
+      <td>[markets, johan, financial, nasdaq, toll, trad...</td>
       <td>[]</td>
     </tr>
     <tr>
       <th>61</th>
-      <td>https://www.nasdaq.com/articles/canaccord-pred...</td>
-      <td>Canaccord Predicts Over 100% Rally for These 3...</td>
-      <td>2020-10-16</td>
-      <td>[Maya Sasson]</td>
-      <td>To this end, the top analyst rates ZYNE a Buy ...</td>
-      <td>[potential, price, predicts, strong, rally, bu...</td>
+      <td>https://www.nasdaq.com/articles/adena-friedman...</td>
+      <td>Adena Friedman: ESG, AI, Cryptocurrency In Foc...</td>
+      <td>2019-01-21</td>
+      <td>[]</td>
+      <td>The world economy is growing more slowly than ...</td>
+      <td>[focus, markets, public, economic, nasdaq, com...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>https://www.nasdaq.com/article/invesco-qqq-cel...</td>
+      <td>Invesco QQQ Celebrates 20 Years of Curating In...</td>
+      <td>NaT</td>
+      <td>[]</td>
+      <td>Invesco recognizes leading ETF’s long-standing...</td>
+      <td>[funds, dec, growth, 20, invesco, 2018, rank, ...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>https://www.nasdaq.com/solutions/midpoint-exte...</td>
+      <td>Midpoint Extended Life Order (M-ELO)</td>
+      <td>NaT</td>
+      <td>[]</td>
+      <td>See M-ELO in action and learn moreNasdaq's EVP...</td>
+      <td>[public, extended, structure, life, services, ...</td>
       <td>[]</td>
     </tr>
   </tbody>
 </table>
-<p>62 rows × 7 columns</p>
+<p>64 rows × 7 columns</p>
 </div>
 </div>
 
@@ -936,16 +944,13 @@ https://www.nasdaq.com/GlobalIndexes
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>https://www.nasdaq.com/articles/nasdaqs-johan-toll-wins-fintech-person-year-2018-05-16
-Nasdaq&#39;s Johan Toll Wins FinTech Person of the Year
-2018-05-16 00:00:00
+<pre>https://www.nasdaq.com/videos/tradetalks%3A-what-trends-will-dominate-the-next-decade
+#TradeTalks: What Trends Will Dominate the Next Decade?
+NaT
 []
-Johan Toll, head of Blockchain Product Management within Nasdaq’s Market Technology business, has been awarded the FinTech Person of the Year from the Financial Technology Forum (FTF) News Technology Innovation Awards for his expertise and developments on blockchain integration with the Nasdaq Financial Framework, as well as other areas of Nasdaq.
-The framework consists of a single operational core that ties together the Nasdaq’s technology portfolio that has proven business functionality across the trade lifecycle.
-Since joining Nasdaq in 2007, Johan has focused on many areas of the trade lifecycle.
-We sat down with Johan to learn more about the blockchain initiatives at Nasdaq and where he sees the technology transforming in the future.
-To learn more about Nasdaq Market Technology initiatives with blockchain, please read: Blockchain Forges AheadTo learn more about the Nasdaq Financial Framework, please visit that section of our website.
-[&#39;person&#39;, &#39;framework&#39;, &#39;wins&#39;, &#39;technology&#39;, &#39;toll&#39;, &#39;markets&#39;, &#39;financial&#39;, &#39;trade&#39;, &#39;business&#39;, &#39;world&#39;, &#39;nasdaq&#39;, &#39;nasdaqs&#39;, &#39;fintech&#39;, &#39;blockchain&#39;, &#39;johan&#39;]
+Caleb Silver from Investopedia returns to #TradeTalks!
+He and Jill Malandrino go over what trends will dominate in the next decade.
+[&#39;investopedia&#39;, &#39;silver&#39;, &#39;decade&#39;, &#39;tradetalks&#39;, &#39;returns&#39;, &#39;dominate&#39;, &#39;trends&#39;, &#39;malandrino&#39;, &#39;jill&#39;, &#39;caleb&#39;]
 []
 </pre>
 </div>
@@ -978,19 +983,19 @@ To learn more about Nasdaq Market Technology initiatives with blockchain, please
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 62 entries, 0 to 61
+RangeIndex: 64 entries, 0 to 63
 Data columns (total 7 columns):
  #   Column     Non-Null Count  Dtype         
 ---  ------     --------------  -----         
- 0   url        62 non-null     object        
- 1   title      62 non-null     object        
- 2   published  28 non-null     datetime64[ns]
- 3   authors    62 non-null     object        
- 4   summary    62 non-null     object        
- 5   keywords   62 non-null     object        
- 6   videos     62 non-null     object        
+ 0   url        64 non-null     object        
+ 1   title      64 non-null     object        
+ 2   published  32 non-null     datetime64[ns]
+ 3   authors    64 non-null     object        
+ 4   summary    64 non-null     object        
+ 5   keywords   64 non-null     object        
+ 6   videos     64 non-null     object        
 dtypes: datetime64[ns](1), object(6)
-memory usage: 3.5+ KB
+memory usage: 3.6+ KB
 </pre>
 </div>
 </div>
@@ -1023,11 +1028,11 @@ memory usage: 3.5+ KB
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([                          &#39;NaT&#39;, &#39;2018-05-16T00:00:00.000000000&#39;,
-       &#39;2019-01-21T00:00:00.000000000&#39;, &#39;2020-10-12T00:00:00.000000000&#39;,
-       &#39;2020-10-09T00:00:00.000000000&#39;, &#39;2020-10-18T00:00:00.000000000&#39;,
-       &#39;2020-10-13T00:00:00.000000000&#39;, &#39;2020-10-16T00:00:00.000000000&#39;,
-       &#39;2020-10-14T00:00:00.000000000&#39;, &#39;2020-10-17T00:00:00.000000000&#39;],
+<pre>array([                          &#39;NaT&#39;, &#39;2020-10-23T00:00:00.000000000&#39;,
+       &#39;2020-10-19T00:00:00.000000000&#39;, &#39;2020-10-09T00:00:00.000000000&#39;,
+       &#39;2020-10-16T00:00:00.000000000&#39;, &#39;2020-10-22T00:00:00.000000000&#39;,
+       &#39;2020-10-21T00:00:00.000000000&#39;, &#39;2020-10-20T00:00:00.000000000&#39;,
+       &#39;2018-05-16T00:00:00.000000000&#39;, &#39;2019-01-21T00:00:00.000000000&#39;],
       dtype=&#39;datetime64[ns]&#39;)</pre>
 </div>
 
@@ -1066,37 +1071,35 @@ memory usage: 3.5+ KB
 <pre>0     http://ir.nasdaq.com/Income-Statement-Trend-Su...
 1     http://ir.nasdaq.com/events/event-details/barc...
 2     http://ir.nasdaq.com/events/event-details/ubs-...
-5     https://www.nasdaq.com/article/invesco-qqq-cel...
-6     https://www.nasdaq.com/solutions/midpoint-exte...
-7     https://www.nasdaq.com/videos/tradetalks%3A-wh...
-8     https://www.nasdaq.com/videos/can-stock-pickin...
-9     https://www.nasdaq.com/videos/tradetalks%3A-th...
-10    https://www.nasdaq.com/videos/tradetalks%3A-ho...
-11    https://www.nasdaq.com/videos/tradetalks%3A-tr...
-12    https://www.nasdaq.com/videos/tradetalks%3A-ex...
-13    https://www.nasdaq.com/videos/tradetalks%3A-wh...
-14    https://www.nasdaq.com/videos/tradetalks%3A-op...
-15    https://www.nasdaq.com/videos/tradetalks%3A-th...
+3     https://www.nasdaq.com/videos/tradetalks%3A-wh...
+4     https://www.nasdaq.com/videos/can-stock-pickin...
+5     https://www.nasdaq.com/videos/tradetalks%3A-ho...
+6     https://www.nasdaq.com/videos/tradetalks%3A-th...
+7     https://www.nasdaq.com/videos/tradetalks%3A-th...
+8     https://www.nasdaq.com/videos/tradetalks%3A-wh...
+9     https://www.nasdaq.com/videos/tradetalks%3A-ho...
+10    https://www.nasdaq.com/videos/tradetalks%3A-vo...
+11    https://www.nasdaq.com/videos/tradetalks%3A-fi...
+12    https://www.nasdaq.com/videos/investing-strate...
+13    https://www.nasdaq.com/videos/investing-strate...
+14    https://www.nasdaq.com/videos/investing-strate...
+15    https://www.nasdaq.com/videos/investing-strate...
 16    https://www.nasdaq.com/videos/investing-strate...
 17    https://www.nasdaq.com/videos/investing-strate...
 18    https://www.nasdaq.com/videos/investing-strate...
 19    https://www.nasdaq.com/videos/investing-strate...
 20    https://www.nasdaq.com/videos/investing-strate...
 21    https://www.nasdaq.com/videos/investing-strate...
-22    https://www.nasdaq.com/videos/investing-strate...
-23    https://www.nasdaq.com/videos/investing-strate...
-24    https://www.nasdaq.com/videos/investing-strate...
-25    https://www.nasdaq.com/videos/investing-strate...
+22    https://www.nasdaq.com/videos/how-clean-is-the...
+23    https://www.nasdaq.com/videos/whiskey-as-a-cov...
+24    https://www.nasdaq.com/videos/a-cyclical-move-...
+25    https://www.nasdaq.com/videos/ignoring-science...
 26    https://www.nasdaq.com/videos/markets-undergoi...
 27    https://www.nasdaq.com/videos/its-getting-toug...
-28    https://www.nasdaq.com/videos/how-goldmans-koc...
-29    https://www.nasdaq.com/videos/abby-joseph-cohe...
-30    https://www.nasdaq.com/videos/yales-roach-says...
-31    https://www.nasdaq.com/videos/oil-range-from-%...
-32    https://www.nasdaq.com/videos/morgan-stanleys-...
-33    https://www.nasdaq.com/news-and-insights/in-th...
-42    https://www.nasdaq.com/articles/fastlys-fsly-d...
-45    https://www.nasdaq.com/articles/daily-markets%...
+28    https://www.nasdaq.com/news-and-insights/in-th...
+46    https://www.nasdaq.com/articles/daily-markets%...
+62    https://www.nasdaq.com/article/invesco-qqq-cel...
+63    https://www.nasdaq.com/solutions/midpoint-exte...
 Name: url, dtype: object</pre>
 </div>
 
@@ -1165,253 +1168,293 @@ Name: url, dtype: object</pre>
   </thead>
   <tbody>
     <tr>
-      <th>38</th>
-      <td>https://www.nasdaq.com/articles/weekly-preview...</td>
-      <td>Weekly Preview: Stocks To Watch (AMZN, INTC, M...</td>
-      <td>2020-10-18</td>
-      <td>[]</td>
-      <td>We will also get results from Microsoft (MSFT)...</td>
-      <td>[company, billion, preview, weekly, watch, tsl...</td>
+      <th>29</th>
+      <td>https://www.nasdaq.com/articles/iphone-12-coul...</td>
+      <td>iPhone 12 Could Be a Tailwind for Apple’s Acce...</td>
+      <td>2020-10-23</td>
+      <td>[Marty Shtrubel]</td>
+      <td>Apple’s (AAPL) accessories business might make...</td>
+      <td>[aapl, tailwind, 12, opinions, feature, access...</td>
       <td>[]</td>
     </tr>
     <tr>
-      <th>51</th>
-      <td>https://www.nasdaq.com/articles/gol-american-a...</td>
-      <td>GOL, American Airlines' Codeshare Pact to Boos...</td>
-      <td>2020-10-17</td>
+      <th>56</th>
+      <td>https://www.nasdaq.com/articles/dominion-energ...</td>
+      <td>Dominion Energy (D) Stock Sinks As Market Gain...</td>
+      <td>2020-10-23</td>
       <td>[Zacks Equity Research]</td>
-      <td>In a customer-friendly move, American Airlines...</td>
-      <td>[deal, american, boost, group, zacks, rank, ai...</td>
+      <td>Dominion Energy (D) closed at $81.14 in the la...</td>
+      <td>[sinks, energy, d, stock, ratio, gains, estima...</td>
       <td>[]</td>
     </tr>
     <tr>
-      <th>48</th>
-      <td>https://www.nasdaq.com/articles/3-biotech-stoc...</td>
-      <td>3 Biotech Stocks to Buy Right Now</td>
-      <td>2020-10-16</td>
-      <td>[Chris Tyler]</td>
-      <td>Still, if there’s one sector with stocks to bu...</td>
-      <td>[charts, biotech, right, shares, price, buy, n...</td>
+      <th>53</th>
+      <td>https://www.nasdaq.com/articles/target-tgt-out...</td>
+      <td>Target (TGT) Outpaces Stock Market Gains: What...</td>
+      <td>2020-10-23</td>
+      <td>[Zacks Equity Research]</td>
+      <td>On that day, TGT is projected to report earnin...</td>
+      <td>[tgt, ratio, stock, estimate, gains, stocks, s...</td>
       <td>[]</td>
     </tr>
     <tr>
-      <th>49</th>
-      <td>https://www.nasdaq.com/articles/buy-the-next-d...</td>
-      <td>Buy the Next Dip in Red-Hot Nvidia Stock</td>
-      <td>2020-10-16</td>
-      <td>[Nicolas Chahine]</td>
-      <td>InvestorPlace - Stock Market News, Stock Advic...</td>
-      <td>[nvidia, shares, share, buy, sell, future, nvd...</td>
+      <th>52</th>
+      <td>https://www.nasdaq.com/articles/bp-bp-stock-si...</td>
+      <td>BP (BP) Stock Sinks As Market Gains: What You ...</td>
+      <td>2020-10-23</td>
+      <td>[Zacks Equity Research]</td>
+      <td>In the latest trading session, BP (BP) closed ...</td>
+      <td>[sinks, reflect, revisions, stock, estimate, g...</td>
       <td>[]</td>
     </tr>
     <tr>
-      <th>60</th>
-      <td>https://www.nasdaq.com/articles/getting-in-the...</td>
-      <td>Getting in the Game with a High-Flying Video G...</td>
-      <td>2020-10-16</td>
+      <th>47</th>
+      <td>https://www.nasdaq.com/articles/wall-st-week-a...</td>
+      <td>Wall St Week Ahead-More U.S. companies offer e...</td>
+      <td>2020-10-23</td>
+      <td>[David Randall]</td>
+      <td>By David RandallNEW YORK, Oct 23 (Reuters) - W...</td>
+      <td>[sp, investors, far, week, offer, pandemic, re...</td>
       <td>[]</td>
-      <td>Supported by shelter-in-place directives enfor...</td>
-      <td>[espos, games, highflying, etf, game, mobile, ...</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>https://www.nasdaq.com/articles/covid-19-is-dr...</td>
+      <td>COVID-19 Is Driving a Surge in E-Commerce Ad S...</td>
+      <td>2020-10-23</td>
+      <td>[Evan Niu]</td>
+      <td>That's also causing a related surge in ad spen...</td>
+      <td>[covid19, surge, fool, ad, revenue, ecommerce,...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>https://www.nasdaq.com/articles/is-the-market-...</td>
+      <td>Is the Market Reaction to Intel's (INTC) Earni...</td>
+      <td>2020-10-23</td>
+      <td>[]</td>
+      <td>It is not unusual for a stock to fall followin...</td>
+      <td>[stock, good, growth, revenue, intc, billion, ...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>https://www.nasdaq.com/articles/hanesbrands-hb...</td>
+      <td>HanesBrands (HBI) Stock Sinks As Market Gains:...</td>
+      <td>2020-10-23</td>
+      <td>[Zacks Equity Research]</td>
+      <td>In the latest trading session, HanesBrands (HB...</td>
+      <td>[sinks, trading, hbi, stock, stocks, gains, ra...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>https://www.nasdaq.com/articles/united-parcel-...</td>
+      <td>United Parcel Service (UPS) Stock Sinks As Mar...</td>
+      <td>2020-10-23</td>
+      <td>[Zacks Equity Research]</td>
+      <td>United Parcel Service (UPS) closed at $171.90 ...</td>
+      <td>[sinks, service, transportation, ratio, gained...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>https://www.nasdaq.com/articles/noble-midstrea...</td>
+      <td>Noble Midstream Partners (NBLX) Stock Sinks As...</td>
+      <td>2020-10-23</td>
+      <td>[Zacks Equity Research]</td>
+      <td>Noble Midstream Partners (NBLX) closed at $9.0...</td>
+      <td>[sinks, trading, revisions, stock, estimate, g...</td>
       <td>[]</td>
     </tr>
     <tr>
       <th>58</th>
+      <td>https://www.nasdaq.com/articles/ciena-cien-sto...</td>
+      <td>Ciena (CIEN) Stock Sinks As Market Gains: What...</td>
+      <td>2020-10-23</td>
+      <td>[Zacks Equity Research]</td>
+      <td>Our research shows that these estimate changes...</td>
+      <td>[sinks, ciena, ratio, stock, estimate, gains, ...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>https://www.nasdaq.com/articles/enbridge-enb-s...</td>
+      <td>Enbridge (ENB) Stock Sinks As Market Gains: Wh...</td>
+      <td>2020-10-23</td>
+      <td>[Zacks Equity Research]</td>
+      <td>In the latest trading session, Enbridge (ENB) ...</td>
+      <td>[sinks, enbridge, ratio, enb, stock, estimate,...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>https://www.nasdaq.com/articles/forget-5g%3A-t...</td>
+      <td>Forget 5G: This Tech Stock Trend Is Generating...</td>
+      <td>2020-10-23</td>
+      <td>[Leo Sun]</td>
+      <td>A wide range of industries will benefit from t...</td>
+      <td>[snowflake, silobusting, stock, trend, forget,...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>https://www.nasdaq.com/articles/the-advantages...</td>
+      <td>The Advantages of Blockchain over Traditional ...</td>
+      <td>2020-10-23</td>
+      <td>[]</td>
+      <td>By eliminating middlemen, cross-border blockch...</td>
+      <td>[funds, stack, transaction, trust, payments, b...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>https://www.nasdaq.com/articles/the-pandemic-s...</td>
+      <td>The pandemic shopping list: Dolls, detergent a...</td>
+      <td>2020-10-23</td>
+      <td>[Uday Sampath]</td>
+      <td>Oct 23 (Reuters) - Consumers have been snappin...</td>
+      <td>[quarterly, views, list, dolls, robot, revenue...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>https://www.nasdaq.com/articles/intel-intc-3rd...</td>
+      <td>Intel (INTC) 3rd Quarter Earnings: What to Expect</td>
+      <td>2020-10-22</td>
+      <td>[]</td>
+      <td>Chip stocks have caught fire, thanks to strong...</td>
+      <td>[3rd, company, billion, revenue, intc, strong,...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>https://www.nasdaq.com/articles/the-market-is-...</td>
+      <td>The Market Is Focused on Stimulus; Will It Com...</td>
+      <td>2020-10-22</td>
+      <td>[]</td>
+      <td>For a few weeks now, the stock market seems to...</td>
+      <td>[stimulus, weeks, democrats, thing, focused, c...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>https://www.nasdaq.com/articles/microsoft-msft...</td>
+      <td>Microsoft (MSFT) 1st Quarter Earnings: What to...</td>
+      <td>2020-10-21</td>
+      <td>[]</td>
+      <td>The software giant is set to report first quar...</td>
+      <td>[microsofts, cloud, 1st, azure, billion, growt...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>https://www.nasdaq.com/articles/tesla-tsla-3rd...</td>
+      <td>Tesla (TSLA) 3rd Quarter Earnings: What to Expect</td>
+      <td>2020-10-21</td>
+      <td>[]</td>
+      <td>Tesla's strong stock surge has been driven by ...</td>
+      <td>[3rd, vehicles, company, vehicle, totals, reve...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>https://www.nasdaq.com/articles/the-reaction-t...</td>
+      <td>The Reaction to Netflix's (NFLX) Earnings: Déj...</td>
+      <td>2020-10-21</td>
+      <td>[]</td>
+      <td>Netflix (NFLX) released earnings after the bel...</td>
+      <td>[released, political, nflx, growth, revenue, t...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>https://www.nasdaq.com/articles/why-investors-...</td>
+      <td>Why Investors Should Be Upbeat About Exxon Mobil</td>
+      <td>2020-10-21</td>
+      <td>[Chris Tyler]</td>
+      <td>InvestorPlace - Stock Market News, Stock Advic...</td>
+      <td>[shares, investors, stock, oil, exxon, income,...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>https://www.nasdaq.com/articles/top-stock-trad...</td>
+      <td>Top Stock Trades for Thursday: SNAP, FB, PINS,...</td>
+      <td>2020-10-21</td>
+      <td>[Bret Kenwell]</td>
+      <td>InvestorPlace - Stock Market News, Stock Advic...</td>
+      <td>[trades, shares, trading, pypl, stock, pins, t...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>https://www.nasdaq.com/articles/plug-workhorse...</td>
+      <td>Plug Workhorse Stock into Your Trading Portfol...</td>
+      <td>2020-10-21</td>
+      <td>[Nicolas Chahine]</td>
+      <td>InvestorPlace - Stock Market News, Stock Advic...</td>
+      <td>[workhorse, trading, twice, stock, stocks, tra...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>https://www.nasdaq.com/articles/how-good-is-th...</td>
+      <td>How Good Is the Surf in Ocean Power Technologi...</td>
+      <td>2020-10-21</td>
+      <td>[Chris Tyler]</td>
+      <td>Some are seeing dollar signs in Ocean Power Te...</td>
+      <td>[purchase, energy, stock, technologies, good, ...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>https://www.nasdaq.com/articles/netflix-nflx-3...</td>
+      <td>Netflix (NFLX) 3rd Quarter Earnings: What to E...</td>
+      <td>2020-10-20</td>
+      <td>[]</td>
+      <td>Netflix (NFLX) is set to report third quarter ...</td>
+      <td>[3rd, netflix, company, stock, nflx, billion, ...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>https://www.nasdaq.com/articles/u.s.-debt%3A-t...</td>
+      <td>U.S. Debt: The Elephant in the Room That Keeps...</td>
+      <td>2020-10-19</td>
+      <td>[]</td>
+      <td>The elephant referred to back then was the nat...</td>
+      <td>[trillion, yes, room, gdp, debt, elephant, don...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>https://www.nasdaq.com/articles/whats-happenin...</td>
+      <td>What's Happening With Moderna Stock?</td>
+      <td>2020-10-19</td>
+      <td>[Trefis Team]</td>
+      <td>To recall, earlier this month, Moderna agreed ...</td>
+      <td>[covid19, doses, vaccine, stock, phase, likely...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>https://www.nasdaq.com/articles/workhorse-stoc...</td>
+      <td>Workhorse Stock Could Skyrocket on a U.S. Post...</td>
+      <td>2020-10-16</td>
+      <td>[Tom Taulli]</td>
+      <td>InvestorPlace - Stock Market News, Stock Advic...</td>
+      <td>[service, workhorse, vehicles, company, stock,...</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>36</th>
       <td>https://www.nasdaq.com/articles/3-high-yield-s...</td>
       <td>3 High-Yield Stocks at Rock-Bottom Prices</td>
       <td>2020-10-16</td>
       <td>[James Brumley]</td>
       <td>It's easy to be wary of dividend stocks right ...</td>
-      <td>[prices, lyondellbasell, dividend, right, busi...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>57</th>
-      <td>https://www.nasdaq.com/articles/anaplan-plan-o...</td>
-      <td>Anaplan (PLAN) Outpaces Stock Market Gains: Wh...</td>
-      <td>2020-10-16</td>
-      <td>[Zacks Equity Research]</td>
-      <td>In the latest trading session, Anaplan (PLAN) ...</td>
-      <td>[gained, gains, latest, share, plan, estimate,...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>56</th>
-      <td>https://www.nasdaq.com/articles/united-parcel-...</td>
-      <td>United Parcel Service (UPS) Outpaces Stock Mar...</td>
-      <td>2020-10-16</td>
-      <td>[Zacks Equity Research]</td>
-      <td>In the latest trading session, United Parcel S...</td>
-      <td>[parcel, gained, service, gains, united, ups, ...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>55</th>
-      <td>https://www.nasdaq.com/articles/dominion-energ...</td>
-      <td>Dominion Energy (D) Outpaces Stock Market Gain...</td>
-      <td>2020-10-16</td>
-      <td>[Zacks Equity Research]</td>
-      <td>Dominion Energy (D) closed at $81.41 in the la...</td>
-      <td>[gains, energy, latest, average, earnings, dom...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>https://www.nasdaq.com/articles/enbridge-enb-o...</td>
-      <td>Enbridge (ENB) Outpaces Stock Market Gains: Wh...</td>
-      <td>2020-10-16</td>
-      <td>[Zacks Equity Research]</td>
-      <td>In the latest trading session, Enbridge (ENB) ...</td>
-      <td>[gains, average, research, enb, earnings, enbr...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>53</th>
-      <td>https://www.nasdaq.com/articles/what-taiwan-se...</td>
-      <td>What Taiwan Semiconductor Earnings Indicate Ab...</td>
-      <td>2020-10-16</td>
-      <td>[Sejuti Banerjea]</td>
-      <td>Taiwan Semiconductor Manufacturing Company TSM...</td>
-      <td>[company, players, analysis, strong, earnings,...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>52</th>
-      <td>https://www.nasdaq.com/articles/this-decades-s...</td>
-      <td>This Decade’s Stock Leaders</td>
-      <td>2020-10-16</td>
-      <td>[Jeff Remsburg]</td>
-      <td>InvestorPlace - Stock Market News, Stock Advic...</td>
-      <td>[early, investor, stage, subscribers, decades,...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>https://www.nasdaq.com/articles/get-ready-to-b...</td>
-      <td>Get Ready To Bull Trade Novavax Stock For A Se...</td>
-      <td>2020-10-16</td>
-      <td>[Chris Tyler]</td>
-      <td>InvestorPlace - Stock Market News, Stock Advic...</td>
-      <td>[novavax, trade, nvax, price, bull, vaccine, s...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>61</th>
-      <td>https://www.nasdaq.com/articles/canaccord-pred...</td>
-      <td>Canaccord Predicts Over 100% Rally for These 3...</td>
-      <td>2020-10-16</td>
-      <td>[Maya Sasson]</td>
-      <td>To this end, the top analyst rates ZYNE a Buy ...</td>
-      <td>[potential, price, predicts, strong, rally, bu...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>https://www.nasdaq.com/articles/4-top-stock-tr...</td>
-      <td>4 Top Stock Trades for Monday: PTON, PFE, FSLY...</td>
-      <td>2020-10-16</td>
-      <td>[Bret Kenwell]</td>
-      <td>Let’s look at a few top stock trades for Monda...</td>
-      <td>[moving, trades, lets, average, pton, 50day, f...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>https://www.nasdaq.com/articles/wall-street-ba...</td>
-      <td>Wall Street bank trading boom does little to a...</td>
-      <td>2020-10-16</td>
-      <td>[Matt Scuffham]</td>
-      <td>Trading revenue was up 4% to 29% at the five U...</td>
-      <td>[banks, wall, boom, lending, street, investors...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>https://www.nasdaq.com/articles/stay-at-home-s...</td>
-      <td>'Stay at Home' Stocks Can Still Thrive Even Wh...</td>
-      <td>2020-10-16</td>
-      <td>[]</td>
-      <td>In most cases, there will be a correction to t...</td>
-      <td>[pandemic, retreats, thrive, continue, disease...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>https://www.nasdaq.com/articles/the-case-again...</td>
-      <td>The Case Against Another Airline Bailout</td>
-      <td>2020-10-14</td>
-      <td>[]</td>
-      <td>As corporations, they know better than most th...</td>
-      <td>[fault, views, used, airline, way, good, passe...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>https://www.nasdaq.com/articles/2-picks-in-the...</td>
-      <td>2 Picks in the Booming Used Car Industry</td>
-      <td>2020-10-13</td>
-      <td>[]</td>
-      <td>The most noticeable of those was a massive 6.7...</td>
-      <td>[prices, used, car, value, fcf, booming, picks...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>https://www.nasdaq.com/articles/bank-of-americ...</td>
-      <td>Bank of America (BAC) 3rd Quarter Earnings: Wh...</td>
-      <td>2020-10-13</td>
-      <td>[]</td>
-      <td>You would be hard-pressed to find a bank that ...</td>
-      <td>[cents, 3rd, billion, investors, share, bank, ...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>https://www.nasdaq.com/articles/wells-fargo-wf...</td>
-      <td>Wells Fargo (WFC) 3rd Quarter Earnings: What t...</td>
-      <td>2020-10-13</td>
-      <td>[]</td>
-      <td>Although Wells Fargo (WFC) has had its own leg...</td>
-      <td>[cents, 3rd, wells, billion, wfc, share, earni...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>https://www.nasdaq.com/articles/delta-airlines...</td>
-      <td>Delta Airlines (DAL) 3rd Quarter Earnings: Wha...</td>
-      <td>2020-10-12</td>
-      <td>[]</td>
-      <td>Delta Airlines (DAL) will report third quarter...</td>
-      <td>[delta, 3rd, dal, share, earnings, workers, in...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>https://www.nasdaq.com/articles/why-cloudflare...</td>
-      <td>Why Cloudflare Stock Soared on Monday</td>
-      <td>2020-10-12</td>
-      <td>[Daniel Sparks]</td>
-      <td>What happenedShares of cloud computing company...</td>
-      <td>[company, alphabet, motley, shares, zuckerberg...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>59</th>
-      <td>https://www.nasdaq.com/articles/making-a-portf...</td>
-      <td>Making A Portfolio Election-Proof</td>
-      <td>2020-10-12</td>
-      <td>[Lyn Alden Schwartzer]</td>
-      <td>Federal Debt GrowthThis chart shows federal de...</td>
-      <td>[r, making, debt, percentage, returns, electio...</td>
-      <td>[]</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>https://www.nasdaq.com/articles/what-apple-aap...</td>
-      <td>What Apple (AAPL) Investors Can Expect Followi...</td>
-      <td>2020-10-12</td>
-      <td>[]</td>
-      <td>Earnings season is getting underway, so this w...</td>
-      <td>[aapl, report, tomorrows, investors, event, ip...</td>
+      <td>[att, lyondellbasell, stock, stocks, interest,...</td>
       <td>[]</td>
     </tr>
     <tr>
@@ -1421,27 +1464,27 @@ Name: url, dtype: object</pre>
       <td>2020-10-09</td>
       <td>[Leo Sun]</td>
       <td>AppleApple is widely expected to reveal the iP...</td>
-      <td>[right, million, buy, earnings, apple, tmobile...</td>
+      <td>[apple, skyworks, stock, stocks, earnings, 5g,...</td>
       <td>[]</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>61</th>
       <td>https://www.nasdaq.com/articles/adena-friedman...</td>
       <td>Adena Friedman: ESG, AI, Cryptocurrency In Foc...</td>
       <td>2019-01-21</td>
       <td>[]</td>
       <td>The world economy is growing more slowly than ...</td>
-      <td>[davos, cryptocurrency, wrote, markets, econom...</td>
+      <td>[focus, markets, public, economic, nasdaq, com...</td>
       <td>[]</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>60</th>
       <td>https://www.nasdaq.com/articles/nasdaqs-johan-...</td>
       <td>Nasdaq's Johan Toll Wins FinTech Person of the...</td>
       <td>2018-05-16</td>
       <td>[]</td>
       <td>Johan Toll, head of Blockchain Product Managem...</td>
-      <td>[person, framework, wins, technology, toll, ma...</td>
+      <td>[markets, johan, financial, nasdaq, toll, trad...</td>
       <td>[]</td>
     </tr>
   </tbody>
@@ -1465,8 +1508,8 @@ Name: url, dtype: object</pre>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">files</span>
-<span class="n">df_dates</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;NDX_news_headlines_accessed_2020-10-18.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
-<span class="n">files</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;NDX_news_headlines_accessed_2020-10-18.csv&#39;</span><span class="p">)</span>
+<span class="n">df_dates</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;NDX_news_headlines_accessed_2020-10-23.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+<span class="n">files</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;NDX_news_headlines_accessed_2020-10-23.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -1481,10 +1524,10 @@ Name: url, dtype: object</pre>
 
 
 
-<div id="534d9366-d5a6-4446-a8ef-f486b71501ee"></div>
+<div id="83bdcbda-3493-44b1-a9f8-2e88f3cb357e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#534d9366-d5a6-4446-a8ef-f486b71501ee');
+var element = $('#83bdcbda-3493-44b1-a9f8-2e88f3cb357e');
 
     async function download(id, filename, size) {
       if (!google.colab.kernel.accessAllowed) {
@@ -1536,11 +1579,11 @@ var element = $('#534d9366-d5a6-4446-a8ef-f486b71501ee');
 
 
 
-<div id="11d6aacf-1427-4be2-ae20-4c5c6c9c4f3d"></div>
+<div id="00564a84-82d8-478a-ad33-57bf01502795"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#11d6aacf-1427-4be2-ae20-4c5c6c9c4f3d');
-download("download_463f41a3-03e4-4186-8cf5-eb74349a9f57", "NDX_news_headlines_accessed_2020-10-18.csv", 27731)
+var element = $('#00564a84-82d8-478a-ad33-57bf01502795');
+download("download_1d802688-9468-4de3-8340-1ac23fd0d8d9", "NDX_news_headlines_accessed_2020-10-18.csv", 31300)
 </script>
 </div>
 
@@ -1556,7 +1599,7 @@ download("download_463f41a3-03e4-4186-8cf5-eb74349a9f57", "NDX_news_headlines_ac
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>References:</p>
 <ol>
-<li><a href="https://www.nasdaq.com/market-activity/index/ndx/news-headlines">NDX News Headlines</a> accessed 18-October-2020.</li>
+<li><a href="https://www.nasdaq.com/market-activity/index/ndx/news-headlines">NDX News Headlines</a> accessed 23-October-2020.</li>
 <li><a href="https://newspaper.readthedocs.io/en/latest/user_guide/quickstart.html#extracting-articles">Quickstart Guide - Newspaper</a> accessed 18-October-2020.</li>
 <li><a href="http://theautomatic.net/2017/08/24/scraping-articles-about-stocks/">Scraping articles about stocks</a> accessed 18-October-2020.</li>
 <li><a href="https://www.youtube.com/watch?v=YzMA2O_v5co&amp;t=451s">Scrape and Summarize News Articles by Computer Science</a> accessed 18-October-2020.</li>
