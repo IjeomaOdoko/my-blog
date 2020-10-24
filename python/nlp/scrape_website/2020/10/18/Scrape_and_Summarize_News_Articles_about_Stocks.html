@@ -7,16 +7,17 @@
 <title>Scrape and Summarize News Articles using Python | My Data Analyst Blog</title>
 <meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Scrape and Summarize News Articles using Python" />
+<meta name="author" content="Ijeoma Odoko" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Original post created 18-October-2020. Updated 23-October-2020" />
-<meta property="og:description" content="Original post created 18-October-2020. Updated 23-October-2020" />
-<link rel="canonical" href="https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html" />
-<meta property="og:url" content="https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html" />
+<meta name="description" content="Original post created 18-October-2020. Updated 23-October-2020." />
+<meta property="og:description" content="Original post created 18-October-2020. Updated 23-October-2020." />
+<link rel="canonical" href="https://ijeomaodoko.github.io/my-blog/python/nlp/scrape_website/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html" />
+<meta property="og:url" content="https://ijeomaodoko.github.io/my-blog/python/nlp/scrape_website/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html" />
 <meta property="og:site_name" content="My Data Analyst Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-10-18T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html","@type":"BlogPosting","headline":"Scrape and Summarize News Articles using Python","dateModified":"2020-10-18T00:00:00-05:00","datePublished":"2020-10-18T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ijeomaodoko.github.io/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html"},"description":"Original post created 18-October-2020. Updated 23-October-2020","@context":"https://schema.org"}</script>
+{"url":"https://ijeomaodoko.github.io/my-blog/python/nlp/scrape_website/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html","@type":"BlogPosting","headline":"Scrape and Summarize News Articles using Python","dateModified":"2020-10-18T00:00:00-05:00","datePublished":"2020-10-18T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ijeomaodoko.github.io/my-blog/python/nlp/scrape_website/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html"},"author":{"@type":"Person","name":"Ijeoma Odoko"},"description":"Original post created 18-October-2020. Updated 23-October-2020.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/my-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://ijeomaodoko.github.io/my-blog/feed.xml" title="My Data Analyst Blog" /><link rel="shortcut icon" type="image/x-icon" href="/my-blog/images/favicon.ico"><link href="https://cdn.jsdelivr.net/npm/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
@@ -71,9 +72,11 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Scrape and Summarize News Articles using Python</h1><p class="page-description">Original post created 18-October-2020. Updated 23-October-2020</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-10-18T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Scrape and Summarize News Articles using Python</h1><p class="page-description">Original post created 18-October-2020. Updated 23-October-2020.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-10-18T00:00:00-05:00" itemprop="datePublished">
         Oct 18, 2020
-      </time>
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Ijeoma Odoko</span></span>
        • <span class="read-time" title="Estimated read time">
     
     
@@ -81,6 +84,19 @@ window.onload = wrap_img;
     
 </span></p>
 
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/my-blog/categories/#python">python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/my-blog/categories/#nlp">nlp</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/my-blog/categories/#scrape_website">scrape_website</a>
+        
+      
+      </p>
     
 
     
@@ -117,20 +133,6 @@ window.onload = wrap_img;
 
 <div class="container" id="notebook-container">
         
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li>toc: false</li>
-<li>branch: master</li>
-<li>badges: true</li>
-<li>comments: true</li>
-<li>author: Ijeoma Odoko</li>
-<li>categories: [python, nlp, scrape_website]</li>
-</ul>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="About">About<a class="anchor-link" href="#About"> </a></h2>
@@ -1524,10 +1526,10 @@ Name: url, dtype: object</pre>
 
 
 
-<div id="83bdcbda-3493-44b1-a9f8-2e88f3cb357e"></div>
+<div id="07e678e8-4d84-4e33-88ba-58f83c9d902d"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#83bdcbda-3493-44b1-a9f8-2e88f3cb357e');
+var element = $('#07e678e8-4d84-4e33-88ba-58f83c9d902d');
 
     async function download(id, filename, size) {
       if (!google.colab.kernel.accessAllowed) {
@@ -1579,10 +1581,10 @@ var element = $('#83bdcbda-3493-44b1-a9f8-2e88f3cb357e');
 
 
 
-<div id="00564a84-82d8-478a-ad33-57bf01502795"></div>
+<div id="fc65de3b-f073-4ab8-ab0f-29b2fda03ebf"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#00564a84-82d8-478a-ad33-57bf01502795');
+var element = $('#fc65de3b-f073-4ab8-ab0f-29b2fda03ebf');
 download("download_1d802688-9468-4de3-8340-1ac23fd0d8d9", "NDX_news_headlines_accessed_2020-10-18.csv", 31300)
 </script>
 </div>
@@ -1612,7 +1614,15 @@ download("download_1d802688-9468-4de3-8340-1ac23fd0d8d9", "NDX_news_headlines_ac
 
 
 
-  </div><a class="u-url" href="/my-blog/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html" hidden></a>
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="IjeomaOdoko/my-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/my-blog/python/nlp/scrape_website/2020/10/18/Scrape_and_Summarize_News_Articles_about_Stocks.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
