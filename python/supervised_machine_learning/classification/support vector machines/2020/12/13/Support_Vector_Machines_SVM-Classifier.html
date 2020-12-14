@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Implementing Support Vector Machines (SVM) Classifier using Python | My Data Analyst Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Implementing Support Vector Machines (SVM) Classifier using Python" />
+<meta name="author" content="Ijeoma Odoko" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Explore how to implement the Support Vector Machine Algorithm in Python using a real-life dataset" />
+<meta property="og:description" content="Explore how to implement the Support Vector Machine Algorithm in Python using a real-life dataset" />
+<link rel="canonical" href="https://ijeomaodoko.github.io/my-blog/python/supervised_machine_learning/classification/support%20vector%20machines/2020/12/13/Support_Vector_Machines_SVM-Classifier.html" />
+<meta property="og:url" content="https://ijeomaodoko.github.io/my-blog/python/supervised_machine_learning/classification/support%20vector%20machines/2020/12/13/Support_Vector_Machines_SVM-Classifier.html" />
+<meta property="og:site_name" content="My Data Analyst Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-13T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://ijeomaodoko.github.io/my-blog/python/supervised_machine_learning/classification/support%20vector%20machines/2020/12/13/Support_Vector_Machines_SVM-Classifier.html","@type":"BlogPosting","headline":"Implementing Support Vector Machines (SVM) Classifier using Python","dateModified":"2020-12-13T00:00:00-06:00","datePublished":"2020-12-13T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ijeomaodoko.github.io/my-blog/python/supervised_machine_learning/classification/support%20vector%20machines/2020/12/13/Support_Vector_Machines_SVM-Classifier.html"},"author":{"@type":"Person","name":"Ijeoma Odoko"},"description":"Explore how to implement the Support Vector Machine Algorithm in Python using a real-life dataset","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/my-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://ijeomaodoko.github.io/my-blog/feed.xml" title="My Data Analyst Blog" /><link rel="shortcut icon" type="image/x-icon" href="/my-blog/images/favicon.ico"><link href="https://cdn.jsdelivr.net/npm/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/my-blog/">My Data Analyst Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/my-blog/about/">About Me</a><a class="page-link" href="/my-blog/search/">Search</a><a class="page-link" href="/my-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Implementing Support Vector Machines (SVM) Classifier using Python</h1><p class="page-description">Explore how to implement the Support Vector Machine Algorithm in Python using a real-life dataset</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-12-13T00:00:00-06:00" itemprop="datePublished">
+        Dec 13, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Ijeoma Odoko</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      8 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/my-blog/categories/#python">python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/my-blog/categories/#supervised_machine_learning">supervised_machine_learning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/my-blog/categories/#classification">classification</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/my-blog/categories/#support vector machines">support vector machines</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/IjeomaOdoko/my-blog/tree/master/_notebooks/2020-12-13-Support_Vector_Machines_SVM Classifier.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/my-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/IjeomaOdoko/my-blog/master?filepath=_notebooks%2F2020-12-13-Support_Vector_Machines_SVM+Classifier.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/my-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/IjeomaOdoko/my-blog/blob/master/_notebooks/2020-12-13-Support_Vector_Machines_SVM Classifier.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/my-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-12-13-Support_Vector_Machines_SVM Classifier.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="About">About<a class="anchor-link" href="#About"> </a></h2><p>Explore how to implement the Support Vector Machines Algorithm in Python using a classification dataset from the UCI Machine Learning Repository.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-is-Support-Vector-Machines">What is Support Vector Machines<a class="anchor-link" href="#What-is-Support-Vector-Machines"> </a></h3><p>Support Vector Machines also known as SVMs is a supervised machine learning algorithm that can be used to separate a dataset into two classes using a line. This line is called a maximal margin hyperplane, because the line typically has the biggest margin possible on each side of the line to the nearest point.</p>
+<p>See example below. 
+<img src="data:image/png;base64,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" alt="Support Vector Machines.png" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Why-and-When-to-use-Support-Vector-Machines?">Why and When to use Support Vector Machines?<a class="anchor-link" href="#Why-and-When-to-use-Support-Vector-Machines?"> </a></h3><p>Support Vector Machine can be used for supervised machine learning problems such as classification, regressions, and outlier detection. It is found to be effective in high dimensional spaces and also versatile.</p>
+<p>They work best where there is a clear separation between classes. SVM is not ideal for large datasets that have lots of noise or overlapping classes.  If you have lots of features and large dataset, SVM might be slow.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Import-Libraries-and-load-dataset">Import Libraries and load dataset<a class="anchor-link" href="#Import-Libraries-and-load-dataset"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">files</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">uploaded</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+     <input type="file" id="files-a5cb9367-223a-44bf-a61d-4d91f7f179b5" name="files[]" multiple="" disabled="" style="border:none" />
+     <output id="result-a5cb9367-223a-44bf-a61d-4d91f7f179b5">
+      Upload widget is only available when the cell has been executed in the
+      current browser session. Please rerun this cell to enable.
+      </output>
+      <script src="/nbextensions/google.colab/files.js"></script> 
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Saving hcvdat0.csv to hcvdat0.csv
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="n">hcv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">uploaded</span><span class="p">[</span><span class="s1">&#39;hcvdat0.csv&#39;</span><span class="p">]))</span> <span class="c1">##used BytesIO instead of StringIO</span>
+
+<span class="n">hcv</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Category</th>
+      <th>Age</th>
+      <th>Sex</th>
+      <th>ALB</th>
+      <th>ALP</th>
+      <th>ALT</th>
+      <th>AST</th>
+      <th>BIL</th>
+      <th>CHE</th>
+      <th>CHOL</th>
+      <th>CREA</th>
+      <th>GGT</th>
+      <th>PROT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>38.5</td>
+      <td>52.5</td>
+      <td>7.7</td>
+      <td>22.1</td>
+      <td>7.5</td>
+      <td>6.93</td>
+      <td>3.23</td>
+      <td>106.0</td>
+      <td>12.1</td>
+      <td>69.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>38.5</td>
+      <td>70.3</td>
+      <td>18.0</td>
+      <td>24.7</td>
+      <td>3.9</td>
+      <td>11.17</td>
+      <td>4.80</td>
+      <td>74.0</td>
+      <td>15.6</td>
+      <td>76.5</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>46.9</td>
+      <td>74.7</td>
+      <td>36.2</td>
+      <td>52.6</td>
+      <td>6.1</td>
+      <td>8.84</td>
+      <td>5.20</td>
+      <td>86.0</td>
+      <td>33.2</td>
+      <td>79.3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>43.2</td>
+      <td>52.0</td>
+      <td>30.6</td>
+      <td>22.6</td>
+      <td>18.9</td>
+      <td>7.33</td>
+      <td>4.74</td>
+      <td>80.0</td>
+      <td>33.8</td>
+      <td>75.7</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>39.2</td>
+      <td>74.1</td>
+      <td>32.6</td>
+      <td>24.8</td>
+      <td>9.6</td>
+      <td>9.15</td>
+      <td>4.32</td>
+      <td>76.0</td>
+      <td>29.9</td>
+      <td>68.7</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>610</th>
+      <td>611</td>
+      <td>3=Cirrhosis</td>
+      <td>62</td>
+      <td>f</td>
+      <td>32.0</td>
+      <td>416.6</td>
+      <td>5.9</td>
+      <td>110.3</td>
+      <td>50.0</td>
+      <td>5.57</td>
+      <td>6.30</td>
+      <td>55.7</td>
+      <td>650.9</td>
+      <td>68.5</td>
+    </tr>
+    <tr>
+      <th>611</th>
+      <td>612</td>
+      <td>3=Cirrhosis</td>
+      <td>64</td>
+      <td>f</td>
+      <td>24.0</td>
+      <td>102.8</td>
+      <td>2.9</td>
+      <td>44.4</td>
+      <td>20.0</td>
+      <td>1.54</td>
+      <td>3.02</td>
+      <td>63.0</td>
+      <td>35.9</td>
+      <td>71.3</td>
+    </tr>
+    <tr>
+      <th>612</th>
+      <td>613</td>
+      <td>3=Cirrhosis</td>
+      <td>64</td>
+      <td>f</td>
+      <td>29.0</td>
+      <td>87.3</td>
+      <td>3.5</td>
+      <td>99.0</td>
+      <td>48.0</td>
+      <td>1.66</td>
+      <td>3.63</td>
+      <td>66.7</td>
+      <td>64.2</td>
+      <td>82.0</td>
+    </tr>
+    <tr>
+      <th>613</th>
+      <td>614</td>
+      <td>3=Cirrhosis</td>
+      <td>46</td>
+      <td>f</td>
+      <td>33.0</td>
+      <td>NaN</td>
+      <td>39.0</td>
+      <td>62.0</td>
+      <td>20.0</td>
+      <td>3.56</td>
+      <td>4.20</td>
+      <td>52.0</td>
+      <td>50.0</td>
+      <td>71.0</td>
+    </tr>
+    <tr>
+      <th>614</th>
+      <td>615</td>
+      <td>3=Cirrhosis</td>
+      <td>59</td>
+      <td>f</td>
+      <td>36.0</td>
+      <td>NaN</td>
+      <td>100.0</td>
+      <td>80.0</td>
+      <td>12.0</td>
+      <td>9.07</td>
+      <td>5.30</td>
+      <td>67.0</td>
+      <td>34.0</td>
+      <td>68.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>615 rows × 14 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Transform-Dataset">Transform Dataset<a class="anchor-link" href="#Transform-Dataset"> </a></h2><p>This dataset has already been inspected in a previous blog post for Naive Bayes Classifier, so we just the exact same transformations.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hcv</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hcv</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>  <span class="c1"># change the objects to category type data </span>
+<span class="n">hcv</span><span class="p">[</span><span class="s1">&#39;Sex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hcv</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span> <span class="c1"># use label encoder for male vs female </span>
+
+<span class="n">label</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>  <span class="c1">#initialize </span>
+<span class="n">hcv</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">hcv</span><span class="p">[</span><span class="s1">&#39;Sex&#39;</span><span class="p">])</span>
+<span class="n">hcv</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Category</th>
+      <th>Age</th>
+      <th>Sex</th>
+      <th>ALB</th>
+      <th>ALP</th>
+      <th>ALT</th>
+      <th>AST</th>
+      <th>BIL</th>
+      <th>CHE</th>
+      <th>CHOL</th>
+      <th>CREA</th>
+      <th>GGT</th>
+      <th>PROT</th>
+      <th>Gender</th>
+      <th>New Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>38.5</td>
+      <td>52.5</td>
+      <td>7.7</td>
+      <td>22.1</td>
+      <td>7.5</td>
+      <td>6.93</td>
+      <td>3.23</td>
+      <td>106.0</td>
+      <td>12.1</td>
+      <td>69.0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>38.5</td>
+      <td>70.3</td>
+      <td>18.0</td>
+      <td>24.7</td>
+      <td>3.9</td>
+      <td>11.17</td>
+      <td>4.80</td>
+      <td>74.0</td>
+      <td>15.6</td>
+      <td>76.5</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>46.9</td>
+      <td>74.7</td>
+      <td>36.2</td>
+      <td>52.6</td>
+      <td>6.1</td>
+      <td>8.84</td>
+      <td>5.20</td>
+      <td>86.0</td>
+      <td>33.2</td>
+      <td>79.3</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>43.2</td>
+      <td>52.0</td>
+      <td>30.6</td>
+      <td>22.6</td>
+      <td>18.9</td>
+      <td>7.33</td>
+      <td>4.74</td>
+      <td>80.0</td>
+      <td>33.8</td>
+      <td>75.7</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>39.2</td>
+      <td>74.1</td>
+      <td>32.6</td>
+      <td>24.8</td>
+      <td>9.6</td>
+      <td>9.15</td>
+      <td>4.32</td>
+      <td>76.0</td>
+      <td>29.9</td>
+      <td>68.7</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>608</th>
+      <td>609</td>
+      <td>3=Cirrhosis</td>
+      <td>58</td>
+      <td>f</td>
+      <td>34.0</td>
+      <td>46.4</td>
+      <td>15.0</td>
+      <td>150.0</td>
+      <td>8.0</td>
+      <td>6.26</td>
+      <td>3.98</td>
+      <td>56.0</td>
+      <td>49.7</td>
+      <td>80.6</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>609</th>
+      <td>610</td>
+      <td>3=Cirrhosis</td>
+      <td>59</td>
+      <td>f</td>
+      <td>39.0</td>
+      <td>51.3</td>
+      <td>19.6</td>
+      <td>285.8</td>
+      <td>40.0</td>
+      <td>5.77</td>
+      <td>4.51</td>
+      <td>136.1</td>
+      <td>101.1</td>
+      <td>70.5</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>610</th>
+      <td>611</td>
+      <td>3=Cirrhosis</td>
+      <td>62</td>
+      <td>f</td>
+      <td>32.0</td>
+      <td>416.6</td>
+      <td>5.9</td>
+      <td>110.3</td>
+      <td>50.0</td>
+      <td>5.57</td>
+      <td>6.30</td>
+      <td>55.7</td>
+      <td>650.9</td>
+      <td>68.5</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>611</th>
+      <td>612</td>
+      <td>3=Cirrhosis</td>
+      <td>64</td>
+      <td>f</td>
+      <td>24.0</td>
+      <td>102.8</td>
+      <td>2.9</td>
+      <td>44.4</td>
+      <td>20.0</td>
+      <td>1.54</td>
+      <td>3.02</td>
+      <td>63.0</td>
+      <td>35.9</td>
+      <td>71.3</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>612</th>
+      <td>613</td>
+      <td>3=Cirrhosis</td>
+      <td>64</td>
+      <td>f</td>
+      <td>29.0</td>
+      <td>87.3</td>
+      <td>3.5</td>
+      <td>99.0</td>
+      <td>48.0</td>
+      <td>1.66</td>
+      <td>3.63</td>
+      <td>66.7</td>
+      <td>64.2</td>
+      <td>82.0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+<p>582 rows × 16 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">drop_index</span> <span class="o">=</span> <span class="n">hcv</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">hcv</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0s=suspect Blood Donor&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>  <span class="c1"># Drop rows with Os=suspect blood donor</span>
+<span class="n">hcv</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">drop_index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hcv_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0=Blood Donor&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;1=Hepatitis&#39;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;2=Fibrosis&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;3=Cirrhosis&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">hcv</span><span class="p">[</span><span class="s2">&quot;New Category&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hcv</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">hcv_dict</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span> <span class="c1"># create new column for Category to remap values </span>
+<span class="n">hcv</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Category</th>
+      <th>Age</th>
+      <th>Sex</th>
+      <th>ALB</th>
+      <th>ALP</th>
+      <th>ALT</th>
+      <th>AST</th>
+      <th>BIL</th>
+      <th>CHE</th>
+      <th>CHOL</th>
+      <th>CREA</th>
+      <th>GGT</th>
+      <th>PROT</th>
+      <th>Gender</th>
+      <th>New Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>38.5</td>
+      <td>52.5</td>
+      <td>7.7</td>
+      <td>22.1</td>
+      <td>7.5</td>
+      <td>6.93</td>
+      <td>3.23</td>
+      <td>106.0</td>
+      <td>12.1</td>
+      <td>69.0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>38.5</td>
+      <td>70.3</td>
+      <td>18.0</td>
+      <td>24.7</td>
+      <td>3.9</td>
+      <td>11.17</td>
+      <td>4.80</td>
+      <td>74.0</td>
+      <td>15.6</td>
+      <td>76.5</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>46.9</td>
+      <td>74.7</td>
+      <td>36.2</td>
+      <td>52.6</td>
+      <td>6.1</td>
+      <td>8.84</td>
+      <td>5.20</td>
+      <td>86.0</td>
+      <td>33.2</td>
+      <td>79.3</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>43.2</td>
+      <td>52.0</td>
+      <td>30.6</td>
+      <td>22.6</td>
+      <td>18.9</td>
+      <td>7.33</td>
+      <td>4.74</td>
+      <td>80.0</td>
+      <td>33.8</td>
+      <td>75.7</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0=Blood Donor</td>
+      <td>32</td>
+      <td>m</td>
+      <td>39.2</td>
+      <td>74.1</td>
+      <td>32.6</td>
+      <td>24.8</td>
+      <td>9.6</td>
+      <td>9.15</td>
+      <td>4.32</td>
+      <td>76.0</td>
+      <td>29.9</td>
+      <td>68.7</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>608</th>
+      <td>609</td>
+      <td>3=Cirrhosis</td>
+      <td>58</td>
+      <td>f</td>
+      <td>34.0</td>
+      <td>46.4</td>
+      <td>15.0</td>
+      <td>150.0</td>
+      <td>8.0</td>
+      <td>6.26</td>
+      <td>3.98</td>
+      <td>56.0</td>
+      <td>49.7</td>
+      <td>80.6</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>609</th>
+      <td>610</td>
+      <td>3=Cirrhosis</td>
+      <td>59</td>
+      <td>f</td>
+      <td>39.0</td>
+      <td>51.3</td>
+      <td>19.6</td>
+      <td>285.8</td>
+      <td>40.0</td>
+      <td>5.77</td>
+      <td>4.51</td>
+      <td>136.1</td>
+      <td>101.1</td>
+      <td>70.5</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>610</th>
+      <td>611</td>
+      <td>3=Cirrhosis</td>
+      <td>62</td>
+      <td>f</td>
+      <td>32.0</td>
+      <td>416.6</td>
+      <td>5.9</td>
+      <td>110.3</td>
+      <td>50.0</td>
+      <td>5.57</td>
+      <td>6.30</td>
+      <td>55.7</td>
+      <td>650.9</td>
+      <td>68.5</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>611</th>
+      <td>612</td>
+      <td>3=Cirrhosis</td>
+      <td>64</td>
+      <td>f</td>
+      <td>24.0</td>
+      <td>102.8</td>
+      <td>2.9</td>
+      <td>44.4</td>
+      <td>20.0</td>
+      <td>1.54</td>
+      <td>3.02</td>
+      <td>63.0</td>
+      <td>35.9</td>
+      <td>71.3</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>612</th>
+      <td>613</td>
+      <td>3=Cirrhosis</td>
+      <td>64</td>
+      <td>f</td>
+      <td>29.0</td>
+      <td>87.3</td>
+      <td>3.5</td>
+      <td>99.0</td>
+      <td>48.0</td>
+      <td>1.66</td>
+      <td>3.63</td>
+      <td>66.7</td>
+      <td>64.2</td>
+      <td>82.0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+<p>582 rows × 16 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hcv</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># drop rows with null values </span>
+
+<span class="c1">## split into features and label/target</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">hcv</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;Sex&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="c1"># features</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">hcv</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="c1"># label/target</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Create-model">Create model<a class="anchor-link" href="#Create-model"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span> <span class="c1"># Initiate svm.SVC (support vector classifier)</span>
+
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># train model</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> <span class="c1"># perform prediction </span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Time the SVM classifier</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span> <span class="c1"># Initiate svm.SVC (support vector classifier)</span>
+
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># train model</span>
+
+<span class="n">stop</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;training time: &#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>training time:  0.005 s
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> <span class="c1"># perform prediction </span>
+
+<span class="n">stop</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;prediction time: &#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>prediction time:  0.002 s
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Get-accuracy">Get accuracy<a class="anchor-link" href="#Get-accuracy"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.9430051813471503</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Try-with-different-Kernels-to-see-if-performance-improves.">Try with different Kernels to see if performance improves.<a class="anchor-link" href="#Try-with-different-Kernels-to-see-if-performance-improves."> </a></h2><p>There are different Kernels that can be used with svm.SVC: {‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’}.</p>
+<p>However default=’rbf’.</p>
+<p>The non-linear kernels are used where the relationship between X and y may not be linear. The decision boundary can be linear or non-linear.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf_linear</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span> <span class="c1"># Initiate SVM classifier with linear kernel</span>
+
+<span class="n">clf_linear</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># train model</span>
+<span class="n">y_pred_linear</span><span class="o">=</span> <span class="n">clf_linear</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf_rbf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">)</span> <span class="c1"># Initiate SVM classifier with rbf kernel</span>
+
+<span class="n">clf_rbf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># train model</span>
+<span class="n">y_pred_rbf</span><span class="o">=</span> <span class="n">clf_rbf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf_poly</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">)</span> <span class="c1"># Initiate SVM classifier with poly kernel</span>
+
+<span class="n">clf_poly</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># train model</span>
+<span class="n">y_pred_poly</span><span class="o">=</span> <span class="n">clf_poly</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_eval</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Score&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_eval</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Linear&#39;</span><span class="p">,</span><span class="s1">&#39;Score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred_linear</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="n">model_eval</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;RBF&#39;</span><span class="p">,</span><span class="s1">&#39;Score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred_rbf</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="n">model_eval</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Polynomial&#39;</span><span class="p">,</span><span class="s1">&#39;Score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred_poly</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="n">model_eval</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Linear</th>
+      <td>0.953368</td>
+    </tr>
+    <tr>
+      <th>RBF</th>
+      <td>0.943005</td>
+    </tr>
+    <tr>
+      <th>Polynomial</th>
+      <td>0.932642</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Other-parameters-you-can-pass-to-your-Classifier-when-initiating-it">Other parameters you can pass to your Classifier when initiating it<a class="anchor-link" href="#Other-parameters-you-can-pass-to-your-Classifier-when-initiating-it"> </a></h2><p>C: float, default=1.0 is a regularization parameter which trades off correct classification of the training set with the maximization of the margin for the decision boundary. With a larger value of C, you get a more accurate prediction but a more complex decision boundary.</p>
+<p>gamma: {‘scale’, ‘auto’} or float, default=’scale’ is typically only used with the non-linear kernel.  When the gamma value is very low, the model is unable to capture or complexity of the data, it will be more similar to a linear model. However with a higher gamma value, there is greater chance of overfitting.</p>
+<p>There are many other parameters you can pass, reference the Scikit Learn library (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html</a>).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf_rbf2</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># Initiate SVM classifier with linear kernel</span>
+
+<span class="n">clf_rbf2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># train model</span>
+<span class="n">y_pred_linear</span><span class="o">=</span> <span class="n">clf_rbf2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred_linear</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.9637305699481865</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf_rbf2</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Initiate SVM classifier with linear kernel</span>
+
+<span class="n">clf_rbf2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># train model</span>
+<span class="n">y_pred_linear</span><span class="o">=</span> <span class="n">clf_rbf2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred_linear</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.9430051813471503</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Overfitting">Overfitting<a class="anchor-link" href="#Overfitting"> </a></h2><p>Overfitting data is something that you want to avoid. It is typically happens by over tweaking the parameters for the Support Vector Machines.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Speed-Accuracy-Tradeoff">Speed Accuracy Tradeoff<a class="anchor-link" href="#Speed-Accuracy-Tradeoff"> </a></h2><p>There are many instances when real time prediction is more important than accuracy. Example could be credit fraud detection. Training a smaller training set will be faster, but will sacrifice some accuracy.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#y_train = y_train[1:10]</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span> <span class="c1"># Initiate svm.SVC (support vector classifier)</span>
+
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># train model</span>
+<span class="n">stop</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;training time: &#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> <span class="c1"># perform prediction </span>
+
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>training time:  0.004 s
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.9430051813471503</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="References">References<a class="anchor-link" href="#References"> </a></h2><p><a href="https://scikit-learn.org/stable/modules/svm.html">scikit learn - Support Vector Machines</a></p>
+<p>Support Vector Regression (SVR) using linear and non-linear kernels (<a href="https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py">https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py</a>)</p>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html</a></p>
+<p><a href="https://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html">https://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html</a></p>
+<p><a href="https://archive.ics.uci.edu/ml/datasets/HCV+data">UCI Machine Learning Repository - HCV dataset</a>. Accessed 15-Nov-2020.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="IjeomaOdoko/my-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/my-blog/python/supervised_machine_learning/classification/support%20vector%20machines/2020/12/13/Support_Vector_Machines_SVM-Classifier.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/my-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/my-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/my-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>This is a blog to capture my learnings as a data analyst.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ijeomaodoko" title="ijeomaodoko"><svg class="svg-icon grey"><use xlink:href="/my-blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
